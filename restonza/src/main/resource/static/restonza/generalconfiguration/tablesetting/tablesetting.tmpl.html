@@ -1,0 +1,45 @@
+<div id="tablesetting">
+	<div class="add-row-editable-table" style="margin-bottom: 10px">
+	  <button class="btn btn-primary" ng-click="addTable()">Add Table</button>
+	</div>
+	<div id="tableviewport">
+		<table class="table table-bordered table-hover table-condensed">
+		  <tr>
+		    <th>Table No</th>
+		    <th>Description</th>
+		    <th>Status</th>
+		    <th>Action</th>
+		  </tr>
+		  <tr ng-repeat="table in tables" class="editable-row">
+		    <td class="table-id">
+		        {{table.table_id}}
+		    </td>
+		    <td>
+		        <span editable-text="table.description" e-name="description" e-form="rowform" e-required>
+		          {{ table.description || 'empty' }}
+		        </span>
+		    </td>
+		    <td class="select-td">
+		        <span editable-select="table.status" e-name="status" e-form="rowform" e-selectpicker
+		              e-ng-options="s.value as s.text for s in statuses">
+		          {{ showStatus(table) }}
+		        </span>
+		    </td>
+		    <td>
+		      <form editable-form name="rowform" ng-show="rowform.$visible" class="form-buttons form-inline"
+		            shown="inserted == table">
+		        <button type="button" ng-disabled="rowform.$waiting" class="btn btn-primary editable-table-button btn-xs" ng-click="submitHandler(rowform,table.table_id)">
+		          Save
+		        </button>
+		        <button type="button" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()" class="btn btn-default editable-table-button btn-xs">
+		          Cancel
+		        </button>
+		      </form>
+		      <div class="buttons" ng-show="!rowform.$visible">
+		        <button class="btn btn-primary editable-table-button btn-xs" ng-click="rowform.$show()">Edit</button>
+		      </div>
+		    </td>
+		  </tr>
+		</table>
+	</div>
+</div>

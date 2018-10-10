@@ -1,0 +1,43 @@
+<div class="add-row-editable-table">
+	<button class="btn btn-primary" ng-click="exportCustomerDetails()">Export To Excel</button>
+</div>
+<table id="CustomerData" class="table table-bordered table-hover table-condensed">
+  <tr>
+    <th># Serial No</th>
+    <th>Customer Id</th>
+    <th>Name</th>
+    <th>Device Id</th>
+    <th>Email ID</th>
+    <th>Phone Number</th>
+  </tr>
+  <tr ng-repeat="customer in customerList" class="editable-row">
+    <td class="table-id">
+        {{$index+1}}
+    </td>
+     <td>
+        <span  e-form="rowform" e-required>
+          {{ customer.customer_id || 'empty' }}
+        </span>
+    </td>
+    <td>
+        <span  e-form="rowform" e-required>
+          {{ customer.first_name || 'empty' }} {{ customer.last_name }}
+        </span>
+    </td>
+  	 <td>
+        <span  e-form="rowform" e-required>
+          {{ customer.deviceid || 'empty' }}
+        </span>
+    </td>
+    <td>
+        <span  e-form="rowform" e-required>
+          {{ customer.emailid || 'empty' }}
+        </span>
+    </td>
+    <td>
+        <span  e-form="rowform" e-required>
+          {{ customer.phonenumber || 'empty' }}
+        </span>
+    </td>
+  </tr>
+</table>

@@ -1,0 +1,65 @@
+<div class="row">
+<!-- <div id="chartdiv" style="width: 100%; height: 500px;"></div> -->
+</div>
+
+<div class="row">
+	<div class="col-md-12">
+	<div class="col-md-8">
+		<span id="hotelInfo" style="display:none">{{hotelInfo}}</span>
+		<span id="serverURL" style="display:none">{{serverURL}}</span>
+	    <div id="holder" class="scrollbar"> 
+	        <ul  id="place">
+	        </ul>    
+	    </div>
+	    <div style="float:left;"> 
+	    <ul id="seatDescription">
+			  <div>
+			    <li style="background:url('bower_components/img/available_seat_img.png') no-repeat scroll 0 0 transparent;">Available Table</li>
+			  </div>
+			
+			  <div>
+			    <li style="background:url('bower_components/img/booked_seat_img.png') no-repeat scroll 0 0 transparent;">Booked Table</li>
+			  </div>
+			  
+			  <div>
+			    <li style="background:url('bower_components/img/inactive_seat_img.png') no-repeat scroll 0 0 transparent;">Inactive Tables</li>
+			  </div>
+	    </ul>
+	    </div>
+	   </div>
+	   
+	   <!--  -->
+	  <div class="col-md-4">
+	   <ul id="user-widget">
+		  <li class="user-info" id="menu">
+		    <span class="widgetuser">
+		      {{occupiedtables || 'NO'}} Tables are occupied
+		    </span>
+		  </li>
+		</ul>
+	<br/>
+	   <ul id="user-widget">
+		  <li class="user-info" id="menu">
+		    <span class="widgetuser">
+		      Total Tables: {{tablesCount || 0}} 
+		    </span>
+		  </li>
+		</ul>
+	<br/>	
+		<ul id="user-widget">
+		  <li class="user-info" id="menu">
+		    <span class="widgetuser">
+		      Earning: {{todaysEarning || 0}} 
+		    </span>
+		  </li>
+		</ul>
+		<ul id="user-widget">
+		  <li class="user-info" id="menu">
+		    <span class="widgetuser">
+		      Total Active Users: {{totalActiveUsers || 0}} 
+		    </span>
+		  </li>
+		</ul>
+		</div>
+	</div>
+</div>

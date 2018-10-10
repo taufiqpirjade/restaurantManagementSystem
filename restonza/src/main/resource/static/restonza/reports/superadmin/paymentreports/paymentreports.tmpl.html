@@ -1,0 +1,60 @@
+<div id="getReport">
+	<div class="row">
+		<div class="form-group row">
+			<label for="reporttype" class="col-sm-2 col-form-label">Report type</label>
+			<div class="col-sm-6">
+				<input type="radio" name="reporttype" id="reporttype" ng-model="reporttype" value="daily" ng-click="changeFlag('daily')"/> <span>Daily Report</span>
+				<input type="radio" name="reporttype" id="reporttype" ng-model="reporttype" value="custom" ng-click="changeFlag('custom')"><span>Custom Report</span>
+			</div>
+		</div>
+		
+		<div class="form-group row" ng-show="dailyflag">
+			<label for="startdate" class="col-sm-2 col-form-label">Select Date:</label>
+			<div class="col-sm-6">
+				<input type="text" name="startdate" id="startdate"/>
+			</div>
+		</div>
+		
+		<div class="form-group row" ng-show="customflag">
+			<div class="form-group row">
+				<div class="col-sm-6">
+					<label for="fromdate" class="col-sm-2 col-form-label">From Date:</label>
+					<input type="text" name="fromdate" id="fromdate"/>
+				</div>
+			</div>
+			<div class="form-group row" >
+				<div class="col-sm-6">
+					<label for="todate" class="col-sm-2 col-form-label">To Date:</label>
+					<input type="text" name="todate" id="todate"/>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="btn-group">
+				<button ng-click="getPaymentData()" class="btn btn-info spacing">Generate Report</button>
+				<!-- <button ng-click="downloadPdfReport()" class="btn btn-info spacing">Download PDF Report</button> -->
+			</div>
+		</div>
+	</div>
+	<div>
+	<table class="table table-bordered table-hover table-condensed" fixed-header>
+	  <tr>
+	    <th>#</th>
+	    <th>Hotel Name</th>
+	    <th>Payment Received</th>
+	  </tr>
+	  
+	  <tr ng-repeat="data in reportData" class="editable-row">
+	    <td class="table-id">
+	        {{$index+1}}
+	    </td>
+	    <td class="shrink">
+	          {{ data.hotelname|| 'empty' }}
+	    </td>
+	    <td class="shrink">
+	          {{ data.amount || 'empty' }}
+	    </td>
+	  </tr>
+	</table>
+	</div>
+</div>

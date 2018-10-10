@@ -1,0 +1,118 @@
+<div id="taxsetting">
+<div class="add-row-editable-table">
+  <button class="btn btn-primary" ng-click="openModel(); showModal = !showModal"  style="padding-bottom: 4 px;">Add New Tax</button>
+</div>
+<table class="table table-bordered table-hover table-condensed">
+  <tr>
+    <th>#</th>
+    <th ng-hide="true">id</th>
+    <th>Tax Name*</th>
+    <th>Percentage*</th>
+    <th>Status*</th>
+    <th>Is Liquor*</th>
+    <th>Action</th>
+  </tr>
+  <tr ng-repeat="tax in taxes" class="editable-row">
+    <td class="table-id">
+        {{$index+1}}
+    </td>
+    <td ng-hide="true">
+    	<span editable-text="tax.id" e-name="id" e-form="rowform" e-required>
+          {{ tax.id || 'empty' }}
+        </span>
+    </td>
+    <td>
+        <span editable-text="tax.taxname" e-name="taxname" e-form="rowform" e-required>
+          {{ tax.taxname || 'empty' }}
+        </span>
+    </td>
+    
+    <td>
+        <span editable-text="tax.percentage" e-name="percentage" e-format="number" e-form="rowform" e-required>
+          {{ tax.percentage || 'empty' }}
+        </span>
+    </td>
+   
+    <td class="select-td">
+        <span editable-select="tax.status" e-name="status" e-form="rowform" e-selectpicker
+              e-ng-options="s.value as s.text for s in statuses">
+          {{ showStatus(tax) }}
+        </span>
+    </td>
+    
+     <td class="select-td">
+        <span editable-select="tax.isliquortax" e-name="isliquortax" e-form="rowform" e-selectpicker
+              e-ng-options="s.value as s.text for s in isliquors">
+          {{ showIsLiquor(tax) }}
+        </span>
+    </td>
+    
+    <td>
+      <form editable-form name="rowform" ng-show="rowform.$visible" class="form-buttons form-inline"
+            shown="inserted == tax">
+        <button type="submit" ng-disabled="rowform.$waiting" ng-click="save(rowform,tax)" class="btn btn-primary editable-table-button btn-xs">
+          Save
+        </button>
+        <button type="button" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()" class="btn btn-default editable-table-button btn-xs">
+          Cancel
+        </button>
+      </form>
+      <div class="buttons" ng-show="!rowform.$visible">
+        <button class="btn btn-primary editable-table-button btn-xs" ng-click="rowform.$show()">Edit</button>
+        <button class="btn btn-danger editable-table-button btn-xs" ng-click="removeTax($index)">Delete</button>
+      </div>
+    </td>
+  </tr>
+</table>
+</div>
+
+
+<div class="modal fade in" id="taxModal" aria-hidden="false" style="display:block;" ng-show="showModal">  
+     <div class="modal-dialog">
+         <div class="modal-content">
+         <button type="button" class="close" ng-click="showModal=false">&times;</button>
+         	<div class="modal-header" style="background-color:#337ab7;color:#fff;">
+             Add New Tax
+            </div>
+            <div class="modal-body" style="max-height: calc(100vh - 210px);overflow-y: auto;">
+            <form action="#" id="addtax" class="form-horizontal">
+					<div class="form-group row">
+						<label for=taxname class="col-sm-3 col-form-label">Tax Name*:</label>
+						<div class="col-sm-6">
+							<input type="text" name="taxname" id="taxname" placeholder="Enter Tax Name" ng-model="taxname"/>
+						</div>
+					</div>
+					
+					<div class="form-group row">
+						<label for="percentage" class="col-sm-3 col-form-label">Percentage:</label>
+						<div class="col-sm-6">
+							<input type="text" class="form-control" name="percentage" id="percentage" placeholder="Percentage" ng-model="percentage"/>
+						</div>
+					</div>
+					
+					<div class="form-group row">
+						<label for="optradio1" class="col-sm-3 col-form-label">Status*:</label>
+						<div class="col-sm-6" class="btn-group">
+							<label><input type="radio" name="optradio1" ng-model="status" ng-value="'true'">Active</label>
+						    <label><input type="radio" name="optradio1" ng-model="status" ng-value="'false'">Inactive</label>
+						</div>
+					</div>
+					
+					<div class="form-group row">
+						<label for="optradio2" class="col-sm-3 col-form-label">Is Liquor*:</label>
+						<div class="col-sm-6" class="btn-group">
+							<label><input type="radio" name="optradio2" ng-model="isliquor" ng-value="'true'">Yes</label>
+						    <label><input type="radio" name="optradio2" ng-model="isliquor" ng-value="'false'">No</label>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="btn-group">
+							<button type="submit" class="btn btn-info spacing">Add Tax</button>
+							<button type="button" class="btn btn-primary" ng-click="showModal=!showModal">Cancel</button>  
+						</div>
+					</div>
+				</form>
+            </div>
+         </div>  
+     </div>
+ </div>

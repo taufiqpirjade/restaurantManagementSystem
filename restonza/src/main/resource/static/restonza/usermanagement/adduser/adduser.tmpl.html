@@ -1,0 +1,104 @@
+<div id="addnewuser">
+<form action="#" id="adduser" class="form-horizontal" method="post">
+		  <!-- <div class="form-group row">
+		    <label class="col-sm-2 col-form-label">Email</label>
+		    <div class="col-sm-10">
+		      <p class="form-control-static">email@example.com</p>
+		    </div>
+		  </div> -->
+		  <div class="form-group row">
+		    <label for="role" class="col-sm-2 col-form-label">Role:</label>
+		    <div class="col-sm-2">
+		      <select id="role" name="role" class="form-control"></select>
+		    </div>
+		  </div>
+		  
+		  <div class="form-group row">
+		    <label for="username" class="col-sm-2 col-form-label">User name:</label>
+		    <div class="col-sm-6">
+		    	<input type="text" name="username" id="username"/>
+		    </div>
+		  </div>
+		  
+		  <div class="form-group row">
+		    <label for="password" class="col-sm-2 col-form-label">Password:</label>
+		    <div class="col-sm-6">
+		    	<input type="password" name="password" id="password"/>
+		    </div>
+		  </div>
+		  
+		  <div class="form-group row">
+		    <label for="fname" class="col-sm-2 col-form-label">First Name:</label>
+		    <div class="col-sm-6">
+		    	<input type="text" name="fname" id="fname"/>
+		    </div>
+		  </div>
+		  
+		  <div class="form-group row">
+		    <label for="lname" class="col-sm-2 col-form-label">Last Name:</label>
+		    <div class="col-sm-6">
+		    	<input type="text" name="lname" id="lname"/>
+		    </div>
+		  </div>
+		  
+		  <div class="form-group row">
+		    <label for="email" class="col-sm-2 col-form-label">Email ID:</label>
+		    <div class="col-sm-6">
+		    	<input type="email" name="email" id="email"/>
+		    </div>
+		  </div>
+		  
+		  <div class="form-group row">
+		    <label for="address" class="col-sm-2 col-form-label">Address:</label>
+		    <div class="col-sm-6">
+		    	<textarea name="address" id="address"></textarea>
+		    </div>
+		  </div>
+		  
+		  <div class="form-group row">
+		    <label for="phonenumber" class="col-sm-2 col-form-label">Telephone/ Mobile:</label>
+		    <div class="col-sm-6">
+		    	<input type="text" name="phonenumber" id="phonenumber" placeholder="Mobile Number"/>
+		    </div>
+		  </div>
+		  
+		  <div class="form-group row">
+		    <label for="photo" class="col-sm-2 col-form-label">Employee Photo:</label>
+		    <div class="col-sm-6">
+		    	<input id="photo" name="photo" type="file" class="file-loading"/>
+		    	<img id="myImg" src="#" alt="Employee Photo" width="200px" height="200px"/>
+		    </div>
+		  </div>
+		  
+		  <div class="form-group row">
+			<label for="startdate" class="col-sm-2 col-form-label">Date of Joining:</label>
+			<div class="col-sm-6">
+				<input type="text" name="startdate" id="startdate" placeholder="Date of Joining"/>
+			</div>
+		</div>
+		
+		<div class="form-group row">
+			<label for="salary" class="col-sm-2 col-form-label">Salary:</label>
+			<div class="col-sm-6">
+				<input type="number" name="salary" id="salary" placeholder="Salary"/>
+			</div>
+		</div>
+		  
+		  <div class="form-group row">
+		    <label for="empstatus" class="col-sm-2 col-form-label">Status:</label>
+		    <div class="col-sm-6">
+		    	<div id="empstatus" class="btn-group">
+					<input name="empstatus" type="radio" value="active" checked="checked"/><label class="radiobtn">Active</label>
+					<input name="empstatus" type="radio" value="inactive"/><label class="radiobtn">Inactive</label>
+				</div>
+		    </div>
+		  </div>
+		  
+		 <div class="form-group">
+				<div class="btn-group">
+					<button type="submit" class="btn btn-info spacing">Add User</button>
+					<!-- <button type="reset" class="btn btn-danger spacing">Reset Order</button> -->
+				</div>
+		</div>
+</form>
+</div>

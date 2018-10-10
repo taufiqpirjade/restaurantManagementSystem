@@ -1,0 +1,34 @@
+<div id="greetingsapproval">
+	<table class="table table-bordered table-hover table-condensed">
+	  <tr>
+	    <th># Advertisement No.</th>
+	    <th>Hotel Id</th>
+	    <th>Greeting Name</th>
+	    <th>Greeting Description</th>
+	    <th>Banner Img</th>
+	    <th>Action</th>
+	  </tr>
+	  <tr ng-repeat="greeting in greetings" class="editable-row">
+	    <td class="table-id" ng-model="greeting.id">
+	        {{greeting.id}}
+	    </td>
+	    <td class="table-id" ng-model="greeting.hotel_id">
+	        {{greeting.hotel_id}}
+	    </td>
+	    <td class="table-id" ng-model="greeting.greetingname">
+	        {{greeting.greetingname}}
+	    </td>
+	    <td class="table-id" ng-model="greeting.greetingdetails">
+	        {{greeting.greetingdetails || 'No description'}}
+	    </td>
+	    <td class="table-id">
+	       <img ng-src="data:image/jpeg;base64,{{greeting.greetingimg}}" style="height:50px"/>
+	    </td>
+	    <td>
+	      <div class="buttons" ng-show="!rowform.$visible">
+	        <button class="btn btn-primary btn-xs" ng-click="approveGreeting(greeting.id)">Approve</button>
+	      </div>
+	    </td>
+	  </tr>
+	</table>
+</div>

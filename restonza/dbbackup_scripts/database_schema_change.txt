@@ -1,0 +1,1 @@
+--Run below script in restonza_schema

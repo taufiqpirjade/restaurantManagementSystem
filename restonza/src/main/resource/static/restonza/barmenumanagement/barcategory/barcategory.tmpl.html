@@ -1,0 +1,180 @@
+<div class="add-row-editable-table">
+  <button class="btn btn-primary" ng-click="showAddCategoryPopup()">Add Drinks Category</button>
+  <button class="btn btn-primary" ng-click="updateBarCategorySequence()">Update Sequence</button>
+</div>
+<table id="barcategory" class="table table-bordered table-hover table-condensed">
+  <tr>
+    <th>#</th>
+    <th style="display:none">Id</th>
+    <th>Category Name</th>
+    <th>Status</th>
+    <th>Action</th>
+  </tr>
+  <tr>
+	<td></td>
+	<td><input type="text" ng-model="filtercategory" class="filterclass"/></td> <!-- Need to add filtration logic for name -->
+	<td><select ng-options="s.value as s.text for s in filteredStatus" ng-init=" filterstatus = filteredStatus[0].value" ng-model="filterstatus" class="filterclass"></select></td> <!-- Need to add filtration logic for status -->
+	<td></td>
+ </tr>
+ <tbody ui:sortable ng:model="barcategories">
+  <tr ng-repeat="barcategory in (filterItems = (barcategories| filter:{
+		  bar_category_name:filtercategory,
+		  status:filterstatus}))" style="cursor: move;">
+    <td class="table-id">
+        {{barcategory.sequence}}
+    </td>
+    <td style="display:none">{{ barcategory.id}}</td>
+    <td>
+        <span>
+          {{ barcategory.bar_category_name || 'empty' }}
+        </span>
+    </td>
+    <td class="select-td">
+        <span>
+          {{ showStatus(barcategory) }}
+        </span>
+    </td>
+    <td>
+      <div class="buttons">
+         <button class="btn btn-primary editable-table-button btn-xs" ng-click="openEditableModal(barcategory)">Edit</button>
+        <button class="btn btn-danger editable-table-button btn-xs" ng-click="removeBarCateogory(barcategory)">Delete</button>
+      </div>
+    </td>
+  </tr>
+  </tbody>
+</table>
+
+
+<!--ADD Modal window popup -->
+
+ <div class="modal fade in" aria-hidden="false" style="display: block;" ng-show="showModal">  
+     <div class="modal-dialog modal-lg">    
+         <div class="modal-content">
+         <button type="button" class="close" ng-click="closeAddModel()">&times;</button>
+         	<div class="modal-header" style="background-color: #337ab7;color: #fff;">   
+             Add Drinks Category
+            </div>
+            <div class="modal-body">
+            	<form name ="addbarcategory" ng-submit="addBarCategories()">
+				  <div class="form-group row">
+				    	<label for="category" class="col-sm-3 col-form-label">Drinks Category Name:</label>
+				    	<div class="col-sm-6">
+				    		<input type="text" class="form-control" ng-model="barcategory.barcategoryname" id="category" placeholder="Enter Drinks Category Name" required="required">
+				    	</div>
+				  </div>
+				  <div class="form-group row">
+				  	 <label for="subcategoryd" class="col-sm-3 col-form-label"></label>
+					    <div class="col-6-sm">
+					  	<table>
+					  		<tbody>
+					  			<tr  ng-repeat="barsubcategory in barsubcategories" id="{{barsubcategory}}tr">
+					  				<td>{{barsubcategory}}</td>
+					  				<td><button class="btn btn-danger editable-table-button btn-xs" ng-click="removeCategory($index)"><i class="fa fa-trash" aria-hidden="true"></i></button></td>
+					  			</tr>
+					  		</tbody>
+					  	</table>
+					  	<div>
+					  		<p id="errormsg"></p>
+					  	</div>
+					  </div>
+				  </div>
+				  <div class="form-group row">
+				  	<label for="optradio" class="col-sm-3 col-form-label">Status:</label>
+					  	<div class="col-sm-6">
+							  <span><input type="radio" name="optradio" ng-model="barcategory.status" ng-value="'active'" required="required">Enable</span>
+							  <span><input type="radio" name="optradio" ng-model="barcategory.status" ng-value="'inactive'" required="required">Disable</span>
+							</div>
+					</div>
+			 	 <div class="form-group row">
+			 	 <label>Image:</label>
+			  		<button type="button" class="btn btn-primary" ng-click="showBrowseModal = !showBrowseModal"  style="padding-bottom: 4 px;">Browse</button>
+			  		 <img ng-src="{{selectedImage}}" onerror="this.src='bower_components/img/no_image.png'" style="height:50px"/>
+				</div>
+					<div class="form-group hl">
+						<div class="btn-group">
+				  			<button type="submit" class="btn btn-primary spacing">Submit</button>
+				  			<button type="button" class="btn btn-danger" ng-click="closeAddModel()">Cancel</button>
+				  		</div>
+				  	</div>
+				</form>
+            </div>
+         </div>  
+     </div>
+ </div>
+ 
+ <!--  -->
+ <div class="modal fade in" aria-hidden="false" style="display: block;" ng-show="editshowModal">  
+     <div class="modal-dialog modal-lg">    
+         <div class="modal-content">
+         <button type="button" class="close" ng-click="editshowModal=false">&times;</button>
+         	<div class="modal-header" style="background-color: #337ab7;color: #fff;">   
+             Update Drinks Category
+            </div>
+            <div class="modal-body">
+            	<form name ="addbarcategory" ng-submit="updateBarCategories()">
+				  <div class="form-group row">
+				    	<label for="category" class="col-sm-3 col-form-label">Drinks Category Name:</label>
+				    	<div class="col-sm-6">
+				    		<input type="text" class="form-control" ng-model="updatebarcategory.bar_category_name" id="category" placeholder="Enter Drinks Category Name" required="required">
+				    	</div>
+				  </div>
+				  <div class="form-group row">
+				  		<label for="optradio" class="col-sm-3 col-form-label">Status:</label>
+					  	<div class="col-sm-6">
+							  <span><input type="radio" name="optradio" ng-model="updatebarcategory.status" ng-value="'active'" required="required">Enable</span>
+							  <span><input type="radio" name="optradio" ng-model="updatebarcategory.status" ng-value="'inactive'" required="required">Disable</span>
+						</div>
+					</div>
+				<div class="form-group row">
+			 	 <label>Image:</label>
+			  		<button type="button" class="btn btn-primary" ng-click="showBrowseModal = !showBrowseModal"  style="padding-bottom: 4 px;">Browse</button>
+			  		 <img ng-src="{{selectedImage || updatebarcategory.img_uri}}" onerror="this.src='bower_components/img/no_image.png'" style="height:50px"/>
+				</div>
+					<div class="form-group hl">
+						<div class="btn-group">
+				  			<button type="submit" class="btn btn-primary spacing">Submit</button>
+				  			<button type="button" class="btn btn-danger" ng-click="editshowModal=false">Cancel</button>
+				  		</div>
+				  	</div>
+				</form>
+            </div>
+         </div>  
+     </div>
+ </div>
+ 
+ <div class="modal fade in" aria-hidden="false" style="display: block" ng-show="showBrowseModal">  
+     <div class="modal-dialog modal-lg">    
+         <div class="modal-content">
+         	<button type="button" class="close" ng-click="showBrowseModal=false">&times;</button>
+         	<div class="modal-header" style="background-color: #337ab7;color: #fff;">   
+             Select Image
+            </div>
+           <!--  <div class="modal-body" style="height: 500px; overflow-y: scroll">
+            	<div   ng-repeat="barcategoryimages in barcategoryimagesarray" class="barCatImages">
+            		<img ng-src="{{ barcategoryimages }}" style="height:50px" ng-click="functionToBeExecuted(barcategoryimages)" />
+        		</div>
+        		
+            </div> -->
+            <div class="modal-body" style="height: 500px; overflow-y: scroll">
+        		<table id="barcategory" class="table table-bordered table-hover table-condensed">
+				  <tr ng-repeat="barcategoryimages in barcategoryimagesarray">
+				    <td class="zoom">
+				        <img ng-src="{{ barcategoryimages.img1 }}" style="height:80px" ng-click="functionToBeExecuted(barcategoryimages.img1)" />
+				    </td>
+				    <td class="zoom">
+						<img ng-src="{{ barcategoryimages.img2 }}" style="height:80px" ng-click="functionToBeExecuted(barcategoryimages.img2)" />
+					</td>
+				    <td class="zoom">
+				       <img ng-src="{{ barcategoryimages.img3 }}" style="height:80px" ng-click="functionToBeExecuted(barcategoryimages.img3)" />
+				    </td>
+				    <td class="zoom">
+				        <img ng-src="{{ barcategoryimages.img4 }}" style="height:80px" ng-click="functionToBeExecuted(barcategoryimages.img4)" />
+				    </td>
+				  </tr>
+				</table>
+            </div>
+         </div>  
+     </div>
+ </div>
+ 
+ 

@@ -1,0 +1,91 @@
+<div id="placeneworder">
+	<form action="" id="placeneworderform" class="form-horizontal">
+		  <div class="form-group row">
+		    <label for="tableno" class="col-sm-2 col-form-label">Table No:</label>
+		    <div class="col-sm-2 no-padding">
+		      <select id="tableno" class="form-control"></select>
+		    </div>
+		  </div>
+		  
+		  <!-- <div class="form-group row">
+		    <label for="category" class="col-sm-2 col-form-label">Select Category:</label>
+		    <div class="col-sm-6">
+		    	<div id="category" class="btn-group" ng-repeat="x in category">
+					<input name="category" type="radio" value="{{x}}"/><label class="radiobtn">{{x}}</label>
+				</div>
+		    </div>
+		  </div> -->
+		  
+		  <div class="form-group row">
+		    <label for="category" class="col-sm-2 col-form-label">Select Dish:</label>
+		    <div class="col-sm-8 no-padding">
+		    	<div class="col-sm-4 no-padding">
+		    		 <select id="dish" class="form-control" style="width:200px;">
+		    		 	<option value="" disabled selected>Search Dish</option>
+		    		 </select>
+		    		<br/>
+	    		  	<br/>
+	    		   	<br/>
+		    	</div>
+		    	<div class="col-sm-2 no-padding">
+					<input id="{{$index}}" type='button' value='-' class='qtyminus' ng-click="decrementCurrentSelection()" />
+					<input id= "{{$index}}textbox" type='text' name='quantity' ng-model="currentSelectionCounter" class='qty' />
+					<input id="{{$index}}" type='button' value='+' class='qtyplus' ng-click="incrementCurrentSelection()" />
+		    	</div>
+		    	<div class="col-sm-2 no-padding">
+		    		<input type="button" class="btn btn-primary addnew" value="Add New" ng-click="addNew()">
+		    	</div>
+				<div id="ordertablediv" >
+						<table id="ordertable"class="table table-striped table-bordered" style="margin-top: 10px;">
+							<thead>
+								<tr>
+									<th>
+									<input id="checkboxes" name="checkboxes" type="checkbox" ng-model="selectedAll" ng-click="checkAll()" /></th>
+									<th>Dish Name</th>
+									<th>Quantity</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="dishDetail in dishDetails" id="{{dishDetail.name}}tr">
+									<td><input id="checkboxes" name="checkboxes" type="checkbox" ng-model="dishDetail.selected" /></td>
+									<td><input id="dishname" name="dishname" type="text" class="form-control d" ng-model="dishDetail.name" required  readonly="readonly"/></td>
+									<td>
+										<input id="{{$index}}" type='button' value='-' class='qtyminus' ng-click="decrement($event)" />
+	    								<input id= "{{$index}}textbox" type='text' name='quantity' ng-model="dishDetail.qty" class='qty' />
+	    								<input id="{{$index}}" type='button' value='+' class='qtyplus' ng-click="increment($event)" />
+									</td>
+									<td style="display: none;"><input type="hidden" class="price" value="{{dishDetail.dish_price}}"/></td>
+									<td style="display: none;"><input type="hidden" class="dishid" value="{{dishDetail.dish_id}}"/></td>
+								</tr>
+							</tbody>
+						</table>
+	
+						<div class="form-group">
+							<p id="errormsg"></p>
+							<input ng-hide="!dishDetails.length" type="button" class="btn btn-danger pull-right" ng-click="remove()" value="Remove"> 
+						</div>
+				</div>
+		    </div>
+		  </div>
+		  <div class="form-group row">
+		    <label for="time" class="col-sm-2 col-form-label no-padding">Time:</label>
+		    <div class="col-sm-6 no-padding">
+			    <div class="col-sm-3 no-padding">
+			      <input id="time" name="time" class="form-control" type="number" min="10" step="5" value="10"/>
+			    </div>
+			    <label>min.</label>
+		    </div>
+		  </div>
+		  <div class="form-group row">
+		    <label for="instruction" class="col-sm-2 no-padding col-form-label">Instruction:</label>
+		    <div class="col-sm-4 no-padding">
+			   <input id="instruction" class="form-control" type="text"/>
+		    </div>
+		  </div>
+		 <div class="form-group">
+				<div class="btn-group">
+					<button type="submit" class="btn btn-info spacing">Place Order</button>
+				</div>
+		</div>
+	</form>
+</div>

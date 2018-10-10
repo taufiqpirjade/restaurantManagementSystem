@@ -1,0 +1,71 @@
+<div id="myCampigns">
+	<label class="tableLabel">My Applied/Approved Campaigns</label>
+	<table class="table table-bordered table-hover table-condensed">
+	  <tr>
+	    <th># Campaign No.</th>
+	    <th>Campaign Name</th>
+	    <th>Campaign Description</th>
+	    <th>Price</th>
+	    <th>Status</th>
+	  </tr>
+	  <tr ng-repeat="mycampaign in mycampaigns" class="editable-row">
+	    <td class="table-id" ng-model="ad.id">
+	        {{mycampaign.campaign_id}}
+	    </td>
+	    <td class="table-id" ng-model="ad.adname">
+	        {{mycampaign.campaign_name}}
+	    </td>
+	    <td class="table-id" ng-model="ad.addetails">
+	        {{mycampaign.description || 'No description'}}
+	    </td>
+	    <td class="table-id" ng-model="ad.adname">
+	        {{mycampaign.price}}
+	    </td>
+	    
+	    <td class="table-id" ng-model="mycampaign.price">
+	        <span editable-select="mycampaign.price" e-name="status" e-form="rowform" e-selectpicker
+              e-ng-options="s.value as s.text for s in statuses">
+          	{{ showStatus(mycampaign) }}
+        	</span>
+	    </td>
+	  </tr>
+	</table>
+</div>
+
+
+
+<div id="adsapproval">
+	<label class="tableLabel">New Published Campaigns</label>
+	<table class="table table-bordered table-hover table-condensed">
+	  <tr>
+	    <th># Campaign No.</th>
+	    <th>Campaign Name</th>
+	    <th>Campaign Description</th>
+	    <th>Price</th>
+	    <th>Banner Img</th>
+	    <th>Action</th>
+	  </tr>
+	  <tr ng-repeat="ad in ads" class="editable-row">
+	    <td class="table-id" ng-model="ad.id">
+	        {{ad.id}}
+	    </td>
+	    <td class="table-id" ng-model="ad.adname">
+	        {{ad.adname}}
+	    </td>
+	    <td class="table-id" ng-model="ad.addetails">
+	        {{ad.addetails || 'No description'}}
+	    </td>
+	    <td class="table-id" ng-model="ad.price">
+	        {{ad.price}}
+	    </td>
+	    <td class="table-id">
+	        <img ng-src="data:image/jpeg;base64,{{ad.adimg}}" style="height:50px"/>
+	    </td>
+	    <td>
+	      <div class="buttons" ng-show="!rowform.$visible">
+	        <button class="btn btn-primary editable-table-button btn-xs" ng-click="requestAd(ad.id,ad.adname,ad.price,ad.addetails)">Request</button>
+	      </div>
+	    </td>
+	  </tr>
+	</table>
+</div>

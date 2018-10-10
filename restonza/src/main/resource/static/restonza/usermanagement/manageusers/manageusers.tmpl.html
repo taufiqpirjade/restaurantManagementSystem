@@ -1,0 +1,69 @@
+<div id="userdata">
+	<div>
+		<table id="usertable" class="table table-bordered table-hover table-condensed">
+			<tr>
+				<th ng-hide=true>#</th>
+				<th>id</th>
+				<th>Full Name</th>
+				<th>User Name</th>
+				<th>Date Of Joining</th>
+				<th>Password</th>
+				<th>Address</th>
+				<th>Salary</th>
+				<th>Phone number</th>
+				<th>Email Id</th>
+				<th>Employee Photo</th>
+				<th>Role</th>
+				<th>Status</th>
+				<th>Action</th>
+			</tr>
+			
+			<tr ng-repeat="user in users" 
+									
+			class="editable-row">
+				<td class="table-id" ng-hide=true>{{$index+1}}</td>
+				<td class="table-id" ng-model="user.id" >{{user.id}}</td>
+				<td class="table-id" ng-model="user.fullname" >{{user.fullname}}</td>
+				<td class="table-id" ng-model="user.username" >{{user.username}}</td>
+				<td class="table-id" ng-model="user.dateofjoining" >{{user.dateofjoining | date:'medium'}}</td>
+				<td><span ng-model="user.password" editable-text="user.password" e-name="password" e-form="rowform" onbeforesave="validateField($data,'password')" e-required>{{user.password}}</span></td>
+				<td><span ng-model="user.address" editable-text="user.address" e-name="address" e-form="rowform" onbeforesave="validateField($data,'address')" e-required>{{user.address}}</span></td>
+				<td><span ng-model="user.salary" editable-text="user.salary" e-name="salary" e-form="rowform" onbeforesave="validateField($data,'salary')" e-required e-numbers-only>{{user.salary}}</span></td>
+				<td><span ng-model="user.phonenumber" editable-text="user.phonenumber" e-name="phonenumber" e-form="rowform" e-numbers-only onbeforesave="validateMobileField($data)" e-required>{{user.phonenumber}}</span></td>
+				<td><span ng-model="user.email" editable-text="user.email" e-name="email" e-form="rowform" onbeforesave="validateEmailField($data)" e-required>{{user.email}}</span></td>
+				<td>
+			        <span e-name="emp_photo" e-form="rowform" e-required>
+			         <img src="data:image/jpeg;base64,{{ user.emp_photo || 'empty' }}" style="height:50px"/>
+			        </span>
+			    </td>
+				<td class="select-td">
+			        <span editable-select="user.user_role" e-name="user_role" e-form="rowform" e-selectpicker
+			              e-ng-options="s.value as s.text for s in roles" onbeforesave="validateField($data,'Role')">
+			          {{ showRoles(user) }}
+			        </span>
+			    </td>
+				<td class="select-td">
+			        <span editable-select="user.status" e-name="status" e-form="rowform" e-selectpicker
+			              e-ng-options="s.value as s.text for s in statuses" onbeforesave="validateField($data,'Status')">
+			          {{ showStatus(user) }}
+			        </span>
+			    </td>	
+				<td>
+			        <!-- form -->
+			        <form editable-form name="rowform" ng-show="rowform.$visible" class="form-buttons form-inline" shown="inserted == user" onaftersave="submitUserEntries(user.id, user, rowform.$data)">
+			          <button type="submit" ng-disabled="rowform.$waiting" class="btn btn-primary">
+			            <i class="fa fa-check-square" aria-hidden="true"> Save</i>
+			          </button>
+			          <button type="button" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()" class="btn btn-danger">
+			            <i class="fa fa-times" aria-hidden="true"> Cancel</i>
+			          </button>
+			        </form>
+			        <div class="btn-group spacing" ng-show="!rowform.$visible">
+			          <button type="button" class="btn btn-primary" ng-click="rowform.$show()"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+			          <button type="button" class="btn btn-danger" ng-click="removeUser($index, user.id)"><i class="fa fa-trash" aria-hidden="true"></i></button>
+			        </div>
+			      </td>
+			</tr>
+		</table>
+	</div>
+</div>

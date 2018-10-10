@@ -1,0 +1,42 @@
+<div id="getReport">
+	<form id="addhotelform" class="form-horizontal" action="#">
+		<div class="form-group row">
+			<label for="hotelname" class="col-sm-2 col-form-label">Select Hotel No:</label>
+		    <div class="col-sm-2">
+		      <select id="hotelname" name="hotelname" class="form-control" ng-model ="hotelname" ng-change="getHotelAnalysis()"></select>
+		    </div>
+		</div>
+		
+		<div class="form-group row">
+		    <label for="hotel_name" class="col-sm-2 col-form-label">Hotel Name:</label>
+		    <div class="col-sm-2">
+		      <span id="hotel_name" class="form-control">{{hotel_name}}</span>
+		    </div>
+		  </div>
+		  
+			<!-- <div class="form-group row">
+				<label for="fromdate" class="col-sm-2 col-form-label">From Date:</label>
+				<div class="col-sm-6">
+					<input type="text" name="fromdate" id="fromdate"/>
+				</div>
+			</div>
+			<div class="form-group row">
+				<label for="todate" class="col-sm-2 col-form-label">To Date:</label>
+				<div class="col-sm-6">
+					<input type="text" name="todate" id="todate"/>
+				</div>
+			</div> -->
+			<div class="form-group row">
+					<label for="fromdate" class="col-sm-2 col-form-label">Select Period:</label>
+					<div class="col-sm-6">
+						<input class="daterangepicker-field" id="daterange"></input>
+					</div>
+			</div>
+			
+		<div class="form-group">
+			<div class="btn-group">
+				<button type="button" class="btn btn-info spacing" ng-click="getPdfDownload();">Generate Sales Report</button>
+			</div>
+		</div>
+	</form>
+</div>

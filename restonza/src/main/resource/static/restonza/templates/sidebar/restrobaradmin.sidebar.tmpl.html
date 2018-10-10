@@ -1,0 +1,88 @@
+<span style="font-size: 30px; cursor: pointer; left: 0; position: fixed;" ng-click="openNav()">&#9776;</span>
+<div id="mySidenav" class="sidenav scrollbar">
+ 	<a href="javascript:void(0)" class="closebtn" ng-click="closeNav()">&#9776; Billy</a>
+ <ul id="accordian">
+ 		<li class="panel"><a href="#/dashboard"><img src="/bower_components/img/icons/Dashboard-1.png" class="sidebarimgico"><span class="sidebarlispan">Dashboard</span></a></li>
+     	<li class="panel">
+              		<a href="" data-toggle="collapse" data-parent="#accordian" data-target="#placeordermanagement" ><img src="/bower_components/img/icons/place-order.png" class="sidebarimgico"><span class="sidebarlispan">Place Order</span></a>
+             		<ul class="collapse" id="placeordermanagement">
+                		<li><a href="#/placeorder"><span class="sidebarsublispan"> - Place Order</span></a></li>
+						<li><a href="#/updateorder"><span class="sidebarsublispan"> - Update Order</span></a></li>
+              		</ul>
+            	</li>
+          <li class="panel">
+              		<a href="" data-toggle="collapse" data-parent="#accordian" data-target="#barplaceordermanagement"><img src="/bower_components/img/icons/place-bar-order.png" class="sidebarimgico"><span class="sidebarlispan">Place Drinks Order</span></a>
+             		<ul class="collapse" id="barplaceordermanagement">
+                		<li><a href="#/placebarorder"><span class="sidebarsublispan"> - Place Drinks Order</span></a></li>
+						<li><a href="#/updatebarorder"><span class="sidebarsublispan"> - Update Drinks Order</span></a></li>
+              		</ul>
+            	</li> 
+		<li class="panel">
+			<a href="" data-toggle="collapse" data-parent="#accordian" data-target="#dishmanagement"><img src="/bower_components/img/icons/Dish-Management.png" class="sidebarimgico"><span class="sidebarlispan">Dish Management</span></a>
+			<ul class="collapse" id="dishmanagement">
+				<li><a href="#/categorymanagement"><span class="sidebarsublispan"> - Category Management</span></a></li>
+			<li><a href="#/dishmanagement"><span class="sidebarsublispan"> - Dish Management</span></a></li>
+			<li><a href="#/ingredientmanagement"><span class="sidebarsublispan"> - Ingredients Management</span></a></li>
+			</ul>
+		</li>
+		
+		 <li class="panel">
+			<a href="" data-toggle="collapse" data-parent="#accordian" data-target="#barmanagement"><img src="/bower_components/img/icons/Bar-Management.png" class="sidebarimgico"><span class="sidebarlispan">Drinks Management</span></a>
+			<ul class="collapse" id="barmanagement">
+				<li><a href="#/barcategory"><span class="sidebarsublispan"> - Drinks Category Management</span></a></li>
+			<li><a href="#/baritem"><span class="sidebarsublispan"> - Drinks Item Management</span></a></li>
+			</ul>
+		</li> 
+		<li class="panel">
+              		<a href="" data-toggle="collapse" data-parent="#accordian" data-target="#adminordermanagement"><img src="/bower_components/img/icons/Admin-Order-Manager.png" class="sidebarimgico"><span class="sidebarlispan">Food Order Manager</span></a>
+             		<ul class="collapse" id="adminordermanagement">
+                		<li><a href="#/placedorder"><span class="sidebarsublispan"> - View Placed Orders</span></a></li>
+						<li><a href="#/confirmedorder"><span class="sidebarsublispan"> - View Confirmed Orders</span></a></li>
+						<li><a href="#/pendingOrders"><span class="sidebarsublispan"> - View Pending Orders</span></a></li>
+						<li><a href="#/readyorders"><span class="sidebarsublispan"> - View Ready Orders</span></a></li>
+						<li><a href="#/billordermanagement"><span class="sidebarsublispan"> - Generate Food Bill</span></a></li>
+              		</ul>
+            	</li>
+		
+		<li class="panel">
+              		<a href="" data-toggle="collapse" data-parent="#accordian" data-target="#adminbarordermanagement"><img src="/bower_components/img/icons/Admin-Bar-Order-Manager.png" class="sidebarimgico"><span class="sidebarlispan">Drinks Order Manager</span></a>
+             		<ul class="collapse" id="adminbarordermanagement">
+                		<li><a href="#/placedbarorder"><span class="sidebarsublispan"> - View Placed Orders</span></a></li>
+						<li><a href="#/confirmbarorder"><span class="sidebarsublispan"> - View Confirmed Orders</span></a></li>
+						<li><a href="#/pendingbarorder"><span class="sidebarsublispan"> - View Pending Orders</span></a></li>
+						<li><a href="#/billbarordermanagement"><span class="sidebarsublispan"> - Generate Liquor Bill</span></a></li>
+              		</ul>
+            	</li> 
+		<li class="panel"><a href="#/feedback"><img src="/bower_components/img/icons/customer-feedback.png" class="sidebarimgico"><span class="sidebarlispan">Feedback</span></a></li>
+		
+				<li class="panel">
+              		<a href="" data-toggle="collapse" data-parent="#accordian" data-target="#resports"><img src="/bower_components/img/icons/sales-report.png" class="sidebarimgico"><span class="sidebarlispan">Reports</span></a>
+             		<ul class="collapse" id="resports">
+                		<li><a href="#/salesReport"><span class="sidebarsublispan"> - Sales Report</span></a></li>
+						<li><a href="#/generateDetailReport"><span class="sidebarsublispan"> - Detail Report</span></a></li>
+						<li><a href="#/hotelanalysis"><span class="sidebarsublispan"> - Analysis Dashboard</span></a></li>
+              		</ul>
+            	</li>
+        <li class="panel">
+              		<a href="" data-toggle="collapse" data-parent="#accordian" data-target="#usermanagement"><img src="/bower_components/img/icons/User-managment.png" class="sidebarimgico"><span class="sidebarlispan">User Management</span></a>
+             		<ul class="collapse" id="usermanagement">
+                		<li><a href="#/addUserManage"><span class="sidebarsublispan"> - Add User</span></a></li>
+						<li><a href="#/editProfile"><span class="sidebarsublispan"> - Edit Profile</span></a></li>
+						<li><a href="#/manageUsers"><span class="sidebarsublispan"> - Manage Users</span></a></li>
+              		</ul>
+            	</li>
+            	
+         <li class="panel">
+              		<a href="" data-toggle="collapse" data-parent="#accordian" data-target="#generalconfiguration"><img src="/bower_components/img/icons/configuration.png" class="sidebarimgico"><span class="sidebarlispan">General Configuration</span></a>
+             		<ul class="collapse" id="generalconfiguration">
+                		<li><a href="#/taxsetting"><span class="sidebarsublispan"> - Tax Settings</span></a></li>
+						<li><a href="#/tablesetting"><span class="sidebarsublispan"> - Table Settings</span></a></li>
+						<li><a href="#/qrcodes"><span class="sidebarsublispan"> - QR-Code Management</span></a></li>
+              		</ul>
+            	</li>
+            	
+         <li class="panel"><a href="#/publishedCampaigns"><img src="/bower_components/img/icons/configuration.png" class="sidebarimgico"><span class="sidebarlispan">Published Campaigns</span></a></li>
+     
+     
+     </ul>
+</div>

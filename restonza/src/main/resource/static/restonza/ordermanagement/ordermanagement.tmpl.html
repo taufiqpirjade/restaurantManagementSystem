@@ -1,0 +1,112 @@
+<div id="ordermanagement">
+<table class="table table-bordered table-hover table-condensed">
+  <tr>
+    <th>Order ID</th>
+    <th>Table No.</th>
+    <th>Customer ID</th>
+    <th>Ordered On</th>
+    <th>Updated On</th>
+    <th>Status</th>
+    <th>Action</th>
+  </tr>
+  <tr ng-repeat="order in orders">
+    <td class="table-id">
+        {{order.id}}
+    </td>
+    <td>
+        <span e-name="table_id" e-form="rowform">
+          {{ order.table_id || 'empty' }}
+        </span>
+    </td>
+    
+    <td>
+        <span e-name="table_id" e-form="rowform">
+          {{ order.customer_id || 'empty' }}
+        </span>
+    </td>
+    
+    <td>
+        <span e-name="ordered_on" e-form="rowform">
+           {{order.ordered_on | date:'medium'}}
+        </span>
+    </td>
+    
+    <td>
+        <span e-name="updated_on" e-form="rowform">
+          {{ order.updated_on | date:'medium' }}
+        </span>
+    </td>
+    <td class="select-td">
+        <span editable-select="order.status" e-name="status" e-form="rowform" e-selectpicker
+              e-ng-options="s.value as s.text for s in statuses">
+          {{ showStatus(order) }}
+        </span>
+    </td>
+    
+    <td>
+      <form editable-form name="rowform" ng-show="rowform.$visible" class="form-buttons form-inline"
+            shown="inserted == order">
+        <button type="submit" ng-disabled="rowform.$waiting" ng-click="save(rowform,order)" class="btn btn-primary editable-table-button btn-xs">
+         Save
+        </button>
+        <button type="button" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()" class="btn btn-default editable-table-button btn-xs">
+         Cancel
+        </button>
+      </form>
+      <div class="buttons" ng-show="!rowform.$visible">
+        <button class="btn btn-primary editable-table-button btn-xs" ng-click="rowform.$show()">Edit</button>
+        <!-- <button class="btn btn-danger editable-table-button btn-xs" ng-click="removeDish($index)">Delete</button> -->
+      </div>
+    </td>
+  </tr>
+</table>
+</div>
+
+<!-- Modal window popup -->
+ <!-- <div id="feedback" class="modal fade in" aria-hidden="false" style="display: block;" ng-show="showModal">  
+     <div class="modal-dialog">    
+         <div class="modal-content">
+         	<div class="modal-header" style="background-color: #337ab7;color: #fff;">   
+             Bill Order
+            </div>
+            <div class="modal-body">
+           		<form action="#" id="feedbackform" class="form-horizontal">
+					<div class="form-group row">
+						<label for="orderid" class="col-sm-2 col-form-label">Order ID:</label>
+						<div class="col-sm-6">
+							<input type="text" name="orderid" id="orderid" value="{{editdata.orderid}}" disabled="disabled"/>
+						</div>
+					</div>
+	
+					<div class="form-group row">
+						<label for="amt" class="col-sm-2 col-form-label">Total amount:</label>
+						<div class="col-sm-6">
+							<input type="text" name="amt" id="amt" value="{{editdata.amt}}" disabled="disabled"/>
+						</div>
+					</div>
+					
+					<div class="form-group row">
+						<label for="discount" class="col-sm-2 col-form-label">% Discount(If any):</label>
+						<div class="col-sm-6">
+							<input type="number" name="discount" id="discount" v-alue="0" ng-model="discount"/><span>%</span>
+						</div>
+					</div>
+					
+					<div class="form-group row">
+						<label for="payableamount" class="col-sm-2 col-form-label">Amount Payable</label>
+						<div class="col-sm-6">
+							<input type="number" name="payableamount" id="payableamount" value="{{editdata.amt*(100 - discount)/100}}" disabled="disabled"/>
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<div class="btn-group">
+							<button type="submit" class="btn btn-info spacing">Generate Bill</button>
+							<button type="button" class="btn btn-primary" ng-click="showModal=false">Close</button>  
+						</div>
+					</div>
+				</form>
+			</div>
+         </div>  
+     </div>
+ </div> -->

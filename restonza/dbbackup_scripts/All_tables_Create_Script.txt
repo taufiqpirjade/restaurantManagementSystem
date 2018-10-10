@@ -1,0 +1,275 @@
+####################################################################
+Last updated on: 20-03-2017
+####################################################################
+
+CREATE TABLE `dish_categories` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `category_name` varchar(45) NOT NULL,
+  `status` tinyint(1) DEFAULT NULL,
+  `hotel_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `hotel_id_idx` (`hotel_id`),
+  CONSTRAINT `hotel_id` FOREIGN KEY (`hotel_id`) REFERENCES `hotel_details` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
+
+
+
+####################################################################
+Last updated on: 20-03-2017
+####################################################################
+
+CREATE TABLE `hotel_ingredients` (
+  `ingredient_id` int(11) NOT NULL AUTO_INCREMENT,
+  `ingredients_name` varchar(45) DEFAULT NULL,
+  `status` tinyint(1) DEFAULT '1',
+  `ingredient_hotel` int(11) DEFAULT NULL,
+  PRIMARY KEY (`ingredient_id`),
+  KEY `ingredient_hotel_idx` (`ingredient_hotel`),
+  CONSTRAINT `ingredient_hotel` FOREIGN KEY (`ingredient_hotel`) REFERENCES `hotel_details` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+
+
+
+
+####################################################################
+Last updated on: 20-03-2017
+####################################################################
+CREATE TABLE `hotel_dishes` (
+  `dish_id` int(11) NOT NULL AUTO_INCREMENT,
+  `dish_name` varchar(45) DEFAULT NULL,
+  `dish_category` varchar(45) DEFAULT NULL,
+  `dish_description` varchar(45) DEFAULT NULL,
+  `dish_price` varchar(45) DEFAULT NULL,
+  `calories` varchar(45) DEFAULT NULL,
+  `discount` varchar(45) DEFAULT NULL,
+  `avg_cookingtime` varchar(45) DEFAULT NULL,
+  `image` longblob,
+  `unit` varchar(45) DEFAULT NULL,
+  `hot` tinyint(1) DEFAULT '0',
+  `status` tinyint(1) DEFAULT '0',
+  `hotel` int(11) DEFAULT NULL,
+  `dish_ingredients` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`dish_id`),
+  KEY `hotel_id_idx` (`hotel`),
+  CONSTRAINT `hotel` FOREIGN KEY (`hotel`) REFERENCES `hotel_details` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
+
+
+
+
+
+
+
+
+####################################################################
+Last updated on: 19-03-2017
+####################################################################
+CREATE TABLE `hotel_details` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `hotel_name` varchar(45) COLLATE latin1_general_cs NOT NULL,
+  `hotel_address` varchar(255) CHARACTER SET latin1 NOT NULL,
+  `hotel_table_count` int(11) NOT NULL,
+  `hotel_subscription_plan` varchar(255) COLLATE latin1_general_cs DEFAULT NULL,
+  `hotel_start_date` datetime DEFAULT NULL,
+  `hotel_end_date` datetime DEFAULT NULL,
+  `hotel_reg_admin_name` varchar(255) COLLATE latin1_general_cs DEFAULT NULL,
+  `hotel_type` varchar(255) COLLATE latin1_general_cs DEFAULT NULL,
+  `hotel_enabled` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1 COLLATE=latin1_general_cs;
+
+
+####################################################################
+Last updated on: 25-03-2017 :: update
+####################################################################
+CREATE TABLE `order_details` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `table_id` int(11) NOT NULL,
+  `hotel_id` int(11) NOT NULL,
+  `customer_id` int(11) NOT NULL,
+  `ordered_on` datetime NOT NULL,
+  `updated_on` datetime NOT NULL,
+  `estimated_time` int(11) NOT NULL,
+  `actual_time` int(11) NOT NULL DEFAULT '0',
+  `status` varchar(45) COLLATE latin1_general_cs NOT NULL,
+  `order_summary` varchar(255) COLLATE latin1_general_cs NOT NULL,
+  `instruction` varchar(255) COLLATE latin1_general_cs NOT NULL,
+  `amount` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1 COLLATE=latin1_general_cs;
+
+####################################################################
+Last updated on: 18-03-2017 :: Delete table
+####################################################################
+CREATE TABLE `placed_order_details` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `hotel_id` int(11) NOT NULL,
+  `order_id` int(11) NOT NULL,
+  `order_summary` varchar(255) COLLATE latin1_general_cs NOT NULL,
+  `amount` int(11) NOT NULL,
+  `instruction` varchar(255) CHARACTER SET latin1 NOT NULL DEFAULT 'none',
+  PRIMARY KEY (`id`),
+  KEY `order_id_idx` (`order_id`),
+  CONSTRAINT `order_id` FOREIGN KEY (`order_id`) REFERENCES `order_details` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1 COLLATE=latin1_general_cs;
+
+####################################################################
+Last updated on: 18-03-2017
+####################################################################
+CREATE TABLE `dish_categories` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `category_name` varchar(45) NOT NULL,
+  `status` tinyint(1) DEFAULT NULL,
+  `hotel_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `hotel_id_idx` (`hotel_id`),
+  CONSTRAINT `hotel_id` FOREIGN KEY (`hotel_id`) REFERENCES `hotel_details` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+
+####################################################################
+Last updated on: 21-03-2017 latest changes: " `emp_photo` longblob NOT NULL"
+####################################################################
+CREATE TABLE `user_details` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `hotel_id` int(11) NOT NULL,
+  `username` varchar(255) COLLATE latin1_general_cs NOT NULL,
+  `password` varchar(255) COLLATE latin1_general_cs NOT NULL,
+  `user_role` varchar(45) COLLATE latin1_general_cs NOT NULL,
+  `status` tinyint(1) NOT NULL DEFAULT '0',
+  `fullname` varchar(255) COLLATE latin1_general_cs NOT NULL,
+  `email` varchar(255) COLLATE latin1_general_cs NOT NULL,
+  `address` varchar(255) COLLATE latin1_general_cs NOT NULL,
+  `phonenumber` varchar(45) COLLATE latin1_general_cs NOT NULL,
+  `aadhar` varchar(45) COLLATE latin1_general_cs NOT NULL,
+  `dateofjoining` datetime NOT NULL,
+  `salary` double NOT NULL,
+  `emp_photo` longblob NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `hotel_id_idx` (`hotel_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1 COLLATE=latin1_general_cs;
+
+
+####################################################################
+Last updated on: 21-03-2017 latest changes: " `adimg` longblob NOT NULL"
+####################################################################
+CREATE TABLE `ads_details` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `hotel_id` int(11) NOT NULL,
+  `adname` varchar(255) COLLATE latin1_general_cs NOT NULL,
+  `addetails` varchar(255) COLLATE latin1_general_cs DEFAULT NULL,
+  `adimg` longblob NOT NULL,
+  `status` tinyint(1) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1 COLLATE=latin1_general_cs;
+
+
+####################################################################
+Last updated on: 21-03-2017 latest changes: " `greetingimg` longblob NOT NULL"
+####################################################################
+CREATE TABLE `greetings_details` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `hotel_id` int(11) NOT NULL,
+  `greetingname` varchar(255) COLLATE latin1_general_cs NOT NULL,
+  `greetingdetails` varchar(255) CHARACTER SET latin1 DEFAULT NULL,
+  `greetingimg` longblob NOT NULL,
+  `greetingdate` datetime NOT NULL,
+  `status` tinyint(1) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1 COLLATE=latin1_general_cs;
+
+
+####################################################################
+Last updated on: 19-03-2017
+####################################################################
+CREATE TABLE `hotel_subscription_plan_details` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `plan_name` varchar(255) COLLATE latin1_general_cs NOT NULL,
+  `plan_cost` double NOT NULL,
+  `offset` int(11) NOT NULL,
+  `status` tinyint(1) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1 COLLATE=latin1_general_cs;
+SELECT * FROM restonza_schema.hotel_subscription_plan_details;
+
+####################################################################
+Last updated on: 30-03-2017 :: Update
+####################################################################
+CREATE TABLE `hotel_analyzer` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `orderids` varchar(255) COLLATE latin1_general_cs NOT NULL,
+  `hotel_id` int(11) NOT NULL,
+  `customer_id` int(11) NOT NULL,
+  `order_dish_name` varchar(255) COLLATE latin1_general_cs NOT NULL,
+  `feedback` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=72 DEFAULT CHARSET=latin1 COLLATE=latin1_general_cs;
+
+
+####################################################################
+Last updated on: 28-03-2017 :: update
+####################################################################
+CREATE TABLE `feedback` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `hotel_id` int(11) NOT NULL,
+  `customer_name` varchar(255) COLLATE latin1_general_cs NOT NULL,
+  `feedback_comments` varchar(255) COLLATE latin1_general_cs NOT NULL,
+  `point` int(11) NOT NULL,
+  `feedback_customer_id` varchar(45) COLLATE latin1_general_cs NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_cs;
+
+
+####################################################################
+Last updated on: 26-03-2017 :: New addition
+####################################################################
+CREATE TABLE `customer` (
+  `customer_id` varchar(45) NOT NULL,
+  `first_name` varchar(45) NOT NULL,
+  `last_name` varchar(45) DEFAULT NULL,
+  `deviceid` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`customer_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+####################################################################
+Last updated on: 26-03-2017 :: New addition
+####################################################################
+CREATE TABLE `customer_call` (
+  `call_id` int(11) NOT NULL AUTO_INCREMENT,
+  `call_type` varchar(45) NOT NULL,
+  `called_customer_id` varchar(45) NOT NULL,
+  `table_no` varchar(45) NOT NULL,
+  `cust_call_hotel_id` int(11) NOT NULL,
+  PRIMARY KEY (`call_id`),
+  KEY `hotel_id_idx` (`cust_call_hotel_id`),
+  KEY `called_customer_id_idx` (`called_customer_id`),
+  CONSTRAINT `called_customer_id` FOREIGN KEY (`called_customer_id`) REFERENCES `customer` (`customer_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `cust_call_hotel_id` FOREIGN KEY (`cust_call_hotel_id`) REFERENCES `hotel_details` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+####################################################################
+Last updated on: 28-03-2017 :: New addition
+####################################################################
+CREATE TABLE `table_details` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `table_id` int(11) NOT NULL,
+  `hotel_id` int(11) NOT NULL,
+  `description` varchar(255) COLLATE latin1_general_cs NOT NULL,
+  `status` tinyint(1) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1 COLLATE=latin1_general_cs;
+
+
+####################################################################
+Last updated on: 28-03-2017 :: New addition
+####################################################################
+CREATE TABLE `billing_history` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `hotel_id` int(11) NOT NULL,
+  `order_ids` varchar(255) COLLATE latin1_general_cs NOT NULL,
+  `billed_date` datetime NOT NULL,
+  `bill_amount` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_cs;
+

@@ -1,0 +1,33 @@
+<div id="adsapproval">
+	<table class="table table-bordered table-hover table-condensed">
+	  <tr>
+	    <th># Campaign No.</th>
+	    <th>Campaign Name</th>
+	    <th>Hotel Id</th>
+	    <th>Status</th>
+	    <th>Action</th>
+	  </tr>
+	  <tr ng-repeat="campaign in campaigns" class="editable-row">
+	    <td class="table-id" ng-model="campaign.id">
+	        {{campaign.id}}
+	    </td>
+	    <td class="table-id" ng-model="campaign.name">
+	        {{campaign.campaign_name}}
+	    </td>
+	    <td class="table-id" ng-model="campaign.hotelid">
+	        {{campaign.hotel_id}}
+	    </td>
+	    <td class="table-id" ng-model="campaign.status">
+	        <span editable-select="campaign.status" e-name="status" e-form="rowform" e-selectpicker
+              e-ng-options="s.value as s.text for s in statuses">
+          	{{ showStatus(campaign) }}
+        	</span>
+	    </td>
+	    <td>
+	      <div class="buttons" ng-show="!rowform.$visible">
+	        <button class="btn btn-primary editable-table-button btn-xs" ng-click="approveCampaign(campaign.id,campaign.hotel_id)">Approve</button>
+	      </div>
+	    </td>
+	  </tr>
+	</table>
+</div>

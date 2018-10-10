@@ -1,0 +1,370 @@
+<div id="billmanagement">
+<table class="table table-bordered table-hover table-condensed">
+  <tr>
+    <th>Customer ID</th>
+    <th>Table No</th>
+    <th>Order ID</th>
+    <th>Order Summary</th>
+    <th>Amount</th>
+    <th>Online Payment</th>
+    <th>Action</th>
+  </tr>
+  <tr ng-repeat="order in orders">
+    <td class="table-id" ng-model="order.customer_id">
+        {{order.customerid}}
+    </td>
+     <td class="table-id" ng-model="order.tableid">
+        {{order.tableid}}
+    </td>
+    <td>
+        <span e-name="table_id" ng-model="order.orderids">
+          {{ order.orderids || 'empty' }}
+        </span>
+    </td>
+    <td>
+        <span e-name="table_id" ng-model="order.formatOrderSummary">
+          {{ order.formatOrderSummary || 'empty' }}
+        </span>
+    </td>
+    <td ng-show="false">
+        <span e-name="table_id" ng-model="order.ordersummaries">
+          {{ order.ordersummaries || 'empty' }}
+        </span>
+    </td>
+    <td>
+        <span e-name="table_id" ng-model="order.sum">
+          {{ order.sum || '0' }}
+        </span>
+    </td>
+    <td>
+        <span e-name="table_id" ng-model="order.onlinePayment" ng-if="order.onlinePayment==0">
+          NO
+        </span>
+        <span e-name="table_id" ng-model="order.onlinePayment" ng-if="order.onlinePayment==1">
+          YES
+        </span>
+    </td>
+    <td>
+      <div class="buttons" ng-show="!rowform.$visible">
+        <button class="btn btn-primary editable-table-button btn-xs" ng-click="billorder($index)">Bill order</button>
+        <button class="btn btn-default editable-table-button btn-xs" ng-click="printBill($index)">Print KOT</button>
+      </div>
+    </td>
+  </tr>
+</table>
+</div>
+
+<!-- Modal window popup -->
+ <div id="feedback" class="modal fade in" aria-hidden="false" style="display: block;" ng-show="showModal">  
+     <div class="modal-dialog modal-lg">    
+         <div class="modal-content">
+         	<button type="button" class="close" ng-click="showModal=false">&times;</button>
+         	<div class="modal-header" style="background-color: #337ab7;color: #fff;">   
+             	<span>Bill Order</span>
+            </div>
+            <div class="modal-body">
+           		<form action="#" id="feedbackform" class="form-horizontal" style="height: 500px;overflow-y: auto;">
+           			<div class="row">
+           					<div class="col-sm-4" style="padding-left: 50px;">
+           						<div class="row">
+           							<div>
+	           							<label>Order ID: </label>
+	           							<span class="wordwrap">{{editdata.orderid}}</span>
+           							</div>
+           						</div>
+           						<div class="row">
+           							<div>
+	           							<label>Table No: </label>
+	           							<span>{{editdata.tableid}}</span>
+           							</div>
+           						</div>
+           						<div class="row">
+           							<div>
+	           							<label>Customer ID: </label>
+	           							<span class="wordwrap">{{editdata.customerid}}</span>
+           							</div>
+           						</div>
+           					</div>
+           					<div class="col-sm-6 vl">
+           						<div id="ordertablediv" >
+									<table id="ordertable"class="table table-striped table-bordered" style="margin-top: 10px;">
+											<tbody>
+											<tr ng-show ="editdata.foodamount != 'null'">
+												<td colspan="5"><b>Food Order Details</b></td>
+											</tr>
+											<tr ng-show ="editdata.foodamount != 'null'">
+												<th colspan="2">Dish Name</th>
+												<th>Quantity</th>
+												<th>Price</th>
+												<th>Total</th>
+											</tr>
+											<tr ng-repeat="dishDetail in editdata.foodOrderDetails" id="{{dishDetail.name}}tr" ng-show ="editdata.foodamount != 'null'">
+												<td colspan="2"><label>{{dishDetail.dishname}}</label></td>
+												<td><label>{{dishDetail.qty}}</label></td>
+												<td><label>{{dishDetail.dish_price}}</label></td>
+												<td class="accountingalignment"><label>{{dishDetail.qty * dishDetail.dish_price | number:2}}</label></td>
+												
+											</tr>
+											<tr ng-show ="editdata.foodamount != 'null'">
+												<td colspan="4" class="accountingalignment">Total Food Amount</td>
+												<td class="accountingalignment">{{editdata.foodamount| number:2}}</td>
+											</tr>
+											<tr ng-repeat="(key,value) in editdata.taxes" ng-show="editdata.foodamount != 'null'">
+												<td colspan="3" class="accountingalignment">{{key}} </td>
+												<td class="accountingalignment">{{value}} %</td>
+												<td class="accountingalignment">{{editdata.foodamount*value/100 | number:2}}</td>
+											</tr>
+											<tr ng-show ="editdata.foodamount != 'null'">
+												<td colspan="3" class="accountingalignment">Food Discount</td>
+												<td class="accountingalignment"><input class="smalltextbox accountingalignment" type="number" name="discount" id="discount" min="0" value="0" ng-model="foodDiscount" ng-change="percentFoodDiscount(foodDiscount)"/><span>%</span></td>
+												<td class="accountingalignment"><input class="smalltextbox accountingalignment" type="number" name="discounMoneyt" id="discounMoneyt" min="0" value="0" ng-model="foodDiscountMoney" ng-change="roundoffFoodDiscount(foodDiscountMoney)" /></td>
+											</tr>
+											<tr ng-show ="editdata.foodamount != 'null'">
+												<td colspan="4" class="accountingalignment" >Net Food amount</td>
+												<td class="accountingalignment">{{foodBillFinalAmt - foodDiscountMoney | number:2}}</td>
+											</tr>
+											<tr ng-show="editdata.baramount != 'null'">
+												<td colspan="5"><b>Drinks Order Details</b></td>
+											</tr>
+											<tr ng-show="editdata.baramount != 'null'">
+												<th colspan="2">Dish Name</th>
+												<th>Quantity</th>
+												<th>Price</th>
+												<th>Total</th>
+											</tr>
+											<tr ng-repeat="dishDetail in editdata.barOrderDetails" id="{{dishDetail.name}}tr" ng-show="editdata.baramount != 'null'">
+												<td colspan="2"><label>{{dishDetail.dishname}}</label></td>
+												<td><label>{{dishDetail.qty}}</label></td>
+												<td><label>{{dishDetail.dish_price}}</label></td>
+												<td class="accountingalignment"><label>{{dishDetail.qty * dishDetail.dish_price | number:2}}</label></td>
+												
+											</tr>
+											<tr ng-show="editdata.baramount != 'null'">
+												<td colspan="4" class="accountingalignment">Total Liquor Amount</td>
+												<td class="accountingalignment">{{editdata.baramount | number:2}}</td>
+											</tr>
+											<tr ng-repeat="(key,value) in editdata.ltaxes" ng-show="editdata.baramount != 'null'">
+												<td colspan="3" class="accountingalignment">{{key}} %</td>
+												<td class="accountingalignment">{{value}}</td>
+												<td class="accountingalignment">{{editdata.baramount*value/100 | number:2}}</td>
+											</tr>
+											<tr ng-show ="editdata.baramount != 'null'">
+												<td colspan="3" class="accountingalignment">Drinks Discount</td>
+												<td class="accountingalignment"><input class="smalltextbox accountingalignment"  type="number" name="discount" id="discount" min="0" value="0" ng-model="barDiscount" ng-change="percentBarDiscount(barDiscount)" /><span>%</span></td>
+												<td class="accountingalignment"><input class="smalltextbox accountingalignment" type="number" name="discounMoneyt" id="discounMoneyt" min="0" value="0" ng-model="barDiscountMoney" ng-change="roundoffBarDiscount(barDiscountMoney)" /></td>
+											</tr>
+											<tr ng-show ="editdata.baramount != 'null'">
+												<td colspan="4" class="accountingalignment">Net Drinks amount</td>
+												<td class="accountingalignment">{{barBillFinalAmt - barDiscountMoney | number:2}}</td>
+											</tr>
+											
+											<!-- 
+											<tr>
+												<td colspan="3" class="accountingalignment">Discount:<input type="number" name="discount" id="discount" min="0" value="0" ng-model="discount" ng-change="percentDiscount(discount)" /><span>%</span></td>
+												<td><input type="number" name="discounMoneyt" id="discounMoneyt" min="0" value="0" ng-model="discounMoneyt" max="100" ng-change="roundoffDiscount(discounMoneyt)" /></td>
+											</tr>
+											 -->
+											<tr>
+												<td colspan="4" class="accountingalignment"><b>Amount Payable</b></td>
+												<!-- <td><input type="number" name="finalAmount" id="finalAmount" min="0" value="0" ng-model="finalAmount"/></td> -->
+												<td id="payableamt{{editdata.index}}" class="accountingalignment"> <b>{{editdata.amt- foodDiscountMoney- barDiscountMoney | number:2}}</b></td> <!--| {{finalAmount}} {{editdata.amt- discounMoneyt}}   -->
+											</tr>
+											</tbody>
+									</table>
+								</div>
+           					</div>
+           				</div>
+           				<div class="row hl wrapper text-center" >
+           							<div class="btn-group">
+										<button type="button" class="btn btn-info spacing" ng-click="generateBill(editdata.index)">Generate Bill</button>
+										<button type="button" class="btn btn-primary" ng-click="showModal=false">Close</button>  
+									</div>
+           				</div>
+				</form>
+			</div>
+         </div>  
+     </div>
+ </div>
+ 
+ <!-- Feedback Modal -->
+ <!-- Modal window popup -->
+ <div id="feedbackregister" class="modal fade in" aria-hidden="false" style="display: block;" ng-show="showFeedback">  
+     <div class="modal-dialog">    
+         <div class="modal-content">
+        	<button type="button" class="close" ng-click="showFeedback=false">&times;</button>
+         	<div class="modal-header" style="background-color: #337ab7;color: #fff;">   
+             Register Feedback
+            </div>
+            <div class="modal-body">
+           		<form action="#" id="feedbackregisterform" class="form-horizontal">
+					<div class="form-group row">
+						<label for="orderid" class="col-sm-2 col-form-label">Order ID:</label>
+						<div class="col-sm-6">
+							<input type="text" name="orderid" id="orderid" value="{{editdata.orderid}}" disabled="disabled"/>
+						</div>
+					</div>
+					
+					<div class="form-group row">
+						<label for="custname" class="col-sm-2 col-form-label">Customer Name:</label>
+						<div class="col-sm-6">
+							<input type="text" name="custname" id="custname"/>
+						</div>
+					</div>
+					
+					<div class="form-group row">
+						<label for="suggestion" class="col-sm-2 col-form-label">Customer FeedBack(If any):</label>
+						<div class="col-sm-6">
+							<textarea name="suggestion" id="suggestion"></textarea>
+						</div>
+					</div>
+					
+					<div class="form-group row">
+					    <input type="radio" id="rating" name="rating" value="5" /><label for="star5" title="Rocks!">5 stars</label>
+					    <input type="radio" id="rating" name="rating" value="4" /><label for="star4" title="Pretty good">4 stars</label>
+					    <input type="radio" id="rating" name="rating" value="3" /><label for="star3" title="Meh">3 stars</label>
+					    <input type="radio" id="rating" name="rating" value="2" /><label for="star2" title="Kinda bad">2 stars</label>
+					    <input type="radio" id="rating" name="rating" value="1" /><label for="star1" title="Sucks big time">1 star</label>
+					</div>
+					
+					<div class="form-group">
+						<div class="btn-group">
+							<button type="submit" class="btn btn-info spacing">Submit Feedback</button>
+							<button type="button" class="btn btn-primary" ng-click="closeFeedback()">Close</button>
+						</div>
+					</div>
+				</form>
+			</div>
+         </div>  
+     </div>
+ </div>
+ 
+ 
+ <!-- Print billing option -->
+<div id="printservicemodal" class="modal fade in" aria-hidden="false" style="display: block;" ng-show="showPrint">  
+     <div class="modal-dialog modal-lg">    
+         <div class="modal-content">
+          <button type="button" class="close" ng-click="showPrint=false">&times;</button>
+         	<div class="modal-header" style="background-color: #337ab7;color: #fff;">   
+             Print Bill
+            </div>
+            <div class="modal-body">
+           		<form action="#" id="printerform" class="form-horizontal" style="height: 400px;overflow-y: auto;">
+           		<div class="PrintArea" id="billorderkot" style="margin-left: 5px;">
+						<div class="row">
+           					<div class="col-sm-4" style="padding-left: 50px;">
+           						<div class="row">
+           							<div>
+	           							<label>Order ID: </label>
+	           							<span class="wordwrap">{{printdata.orderid}}</span>
+           							</div>
+           						</div>
+           						<div class="row">
+           							<div>
+	           							<label>Table No: </label>
+	           							<span>{{printdata.tableid}}</span>
+           							</div>
+           						</div>
+           						<div class="row">
+           							<div>
+	           							<label>Customer ID: </label>
+	           							<span class="wordwrap">{{printdata.customerid}}</span>
+           							</div>
+           						</div>
+           					</div>
+           					<div class="col-sm-6 vl" id="billdiv">
+           						<div id="ordertablediv" >
+									<table id="ordertable"class="table table-striped table-bordered" style="margin-top: 10px;">
+											<tbody>
+											<tr ng-show ="printdata.foodbillamt != 'null'">
+												<td colspan="5"><b>Food Order Details</b></td>
+											</tr>
+											<tr ng-show ="printdata.foodbillamt != 'null'">
+												<th colspan="2">Dish Name</th>
+												<th>Quantity</th>
+												<th>Price</th>
+												<th>Total</th>
+											</tr>
+											<tr ng-repeat="dishDetail in printdata.foodOrderDetails" id="{{dishDetail.name}}tr" ng-show ="printdata.foodbillamt != 'null'">
+												<td colspan="2"><label>{{dishDetail.dishname}}</label></td>
+												<td><label>{{dishDetail.qty}}</label></td>
+												<td><label>{{dishDetail.price}}</label></td>
+												<td class="accountingalignment"><label>{{dishDetail.qty * dishDetail.price | number:2}}</label></td>
+												
+											</tr>
+											<tr ng-show="printdata.foodbillamt != 'null'">
+												<td colspan="4" class="accountingalignment" >Total Food Amount</td>
+												<td class="accountingalignment">{{printdata.foodbillamt | number:2}}</td>
+											</tr>
+											<tr ng-repeat="(key,value) in printdata.taxes" ng-show="printdata.foodbillamt != 'null'">
+												<td colspan="3" class="accountingalignment">{{key}}</td>
+												<td class="accountingalignment">{{value}}</td>
+												<td class="accountingalignment">{{printdata.foodbillamt*value/100 | number:2}}</td>
+											</tr>
+											<tr ng-show ="printdata.foodbillamt != 'null'">
+												<td colspan="3" class="accountingalignment">Food Discount</td>
+												<td class="accountingalignment"><div><input class="smalltextbox2 accountingalignment" type="number" name="discount" id="discount" min="0" value="0" ng-model="foodDiscount" ng-change="percentFoodDiscount(foodDiscount)" /><span>%</span></div></td>
+												<td class="accountingalignment"><input class="smalltextbox accountingalignment" type="number" name="discounMoneyt" id="discounMoneyt" min="0" value="0" ng-model="foodDiscountMoney" ng-change="roundoffFoodDiscount(foodDiscountMoney)" /></td>
+											</tr>
+											<tr ng-show ="printdata.foodbillamt != 'null'">
+												<td colspan="4" class="accountingalignment" >Net Food amount</td>
+												<td class="accountingalignment">{{foodBillFinalAmt - foodDiscountMoney | number:2}}</td>
+											</tr>
+											<tr ng-show="printdata.barbillamt != 'null'">
+												<td colspan="5"><b>Drinks Order Details</b></td>
+											</tr>
+											<tr ng-show="printdata.barbillamt != 'null'">
+												<th colspan="2">Dish Name</th>
+												<th>Quantity</th>
+												<th>Price</th>
+												<th>Total</th>
+											</tr>
+											<tr ng-repeat="dishDetail in printdata.barOrderDetails" id="{{dishDetail.name}}tr" ng-show="printdata.barbillamt != 'null'">
+												<td colspan="2"><label>{{dishDetail.dishname}}</label></td>
+												<td><label>{{dishDetail.qty}}</label></td>
+												<td><label>{{dishDetail.price}}</label></td>
+												<td class="accountingalignment"><label>{{dishDetail.qty * dishDetail.price | number:2}}</label></td>
+												
+											</tr>
+											<tr ng-show="printdata.barbillamt != 'null'">
+												<td colspan="4" class="accountingalignment">Total Drinks Amount</td>
+												<td class="accountingalignment">{{printdata.barbillamt | number:2 }}</td>
+											</tr>
+											<tr ng-repeat="(key,value) in printdata.ltaxes" ng-show="printdata.barbillamt != 'null'">
+												<td colspan="3" class="accountingalignment">{{key}}</td>
+												<td class="accountingalignment">{{value}}</td>
+												<td class="accountingalignment">{{printdata.barbillamt*value/100 | number:2}}</td>
+											</tr>
+											<tr ng-show ="printdata.barbillamt != 'null'">
+												<td colspan="3" class="accountingalignment">Drinks Discount</td>
+												<td><input class="smalltextbox2 accountingalignment" type="number" name="discount" id="discount" min="0" value="0" ng-model="barDiscount" ng-change="percentBarDiscount(barDiscount)" /><span>%</span></td>
+												<td><input class="smalltextbox accountingalignment" type="number" name="discounMoneyt" id="discounMoneyt" min="0" value="0" ng-model="barDiscountMoney" ng-change="roundoffBarDiscount(barDiscountMoney)" /></td>
+											</tr>
+											<tr ng-show ="printdata.barbillamt != 'null'">
+												<td colspan="4" class="accountingalignment">Net Drinks amount</td>
+												<td class="accountingalignment">{{barBillFinalAmt - barDiscountMoney | number:2}}</td>
+											</tr>
+											<!-- <tr>
+												<td colspan="3" class="accountingalignment">discount</td>
+												<td><input type="number" name="discount" id="discount" min="0" value="0" ng-model="discount" max="30"/><span>%</span></td>
+											</tr> -->
+											<tr>
+												<td colspan="4" class="accountingalignment"><b>Amount Payable</b></td>
+												<td class="accountingalignment"><b>{{printdata.amt- foodDiscountMoney- barDiscountMoney | number:2}}</b></td><!-- {{printdata.amt*(100 - discount)/100}} -->
+											</tr>
+										</tbody>
+									</table>
+								</div>
+           					</div>
+           				</div>
+					</div>
+					<div class="row hl wrapper text-center" >
+						<div class="btn-group">
+							<button type="button" class="btn btn-default spacing" ng-click="printKOT()">Print KOT</button>
+							<button type="button" class="btn btn-primary" ng-click="showPrint=false">Close</button>
+						</div>
+					</div>
+				</form>
+			</div>
+         </div>  
+     </div>
+ </div>

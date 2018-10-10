@@ -1,0 +1,380 @@
+<div class="add-row-editable-table" id="dataFormContainer">
+  <button class="btn btn-primary" ng-click="openModel(); showModal = !showModal"  style="padding-bottom: 4 px;">Add Dish</button>
+  <button class="btn btn-primary" ng-click="downloadMenu();" style="padding-bottom: 4 px;">Download Menu</button>
+  <button class="btn btn-primary" ng-click="updateSequencing(dishes)" style="padding-bottom: 4 px;">Update Sequence</button>
+</div>
+<table id="dishes" class="table table-bordered table-hover table-condensed" fixed-header>
+  <tr class="tableheadercolor">
+		  	<th>
+		  		<a class="normallink" ng-click="sortType = 'sequence'; sortReverse = !sortReverse"> # 
+				   <span ng-show="sortType == 'sequence' && !sortReverse" class="fa fa-caret-down"></span> 
+				   <span ng-show="sortType == 'sequence' && sortReverse" class="fa fa-caret-up"></span>
+				</a>
+		  	</th>
+    		<th style="display:none">Id</th>
+		   	<th>
+			   <a class="normallink" > Name <!-- ng-click="sortType = 'dish_name'; sortReverse = !sortReverse" --> 
+				   <!-- <span ng-show="sortType == 'dish_name' && !sortReverse" class="fa fa-caret-down"></span> 
+				   <span ng-show="sortType == 'dish_name' && sortReverse" class="fa fa-caret-up"></span> -->
+				</a>
+			</th>
+    		<th><a class="normallink" > Category <!-- ng-click="sortType = 'category_name'; sortReverse = !sortReverse" -->
+				   <!--  <span ng-show="sortType == 'category_name' && !sortReverse" class="fa fa-caret-down"></span> 
+				    <span ng-show="sortType == 'category_name' && sortReverse" class="fa fa-caret-up"></span> -->
+				</a>
+			</th>
+				<!--  <th>Description</th> -->
+		    <th>Price</th>
+		   		<!-- <th>Calories</th> -->
+		    <th>Discount</th>
+		   		<!--  <th>Avg. Cooking Time</th> -->
+		    	<!-- <th>Image</th> -->
+		    <th>Unit</th>
+		    <th>Non-Veg</th>
+		    <th>Status</th>
+		    <!-- <th>Ingredients</th> -->
+		    <th>Action</th>
+  </tr>
+  <tr>
+  	<td></td>
+  	<td style="display:none"></td>
+    <td><input type="text" ng-model="filterDish" class="filterclass"/></td>
+    <td><input type="text" ng-model="filterCategory" class="filterclass"/></td>
+    <td></td>
+    <!-- <td></td>
+    <td></td>
+    <td></td>
+    <td></td> -->
+    <td></td>
+    <td></td>
+    <td></td>
+    <!-- <td></td> -->
+    <td></td>
+    <td></td>
+  </tr>
+  <tbody ui:sortable ng:model="dishes">
+  <tr ng-repeat="dish in (filterItems = (dishes| filter:{
+		  dish_name:filterDish,
+		  dish_category:filterCategory}))" style="cursor: move;" class="editable-row">
+     <td class="table-id">
+        {{dish.sequence}}
+    </td>
+    <td e-name="id" style="display:none">
+        {{dish.dish_id}}
+    </td>
+    <td>
+        <span e-name="name" e-form="rowform" e-required>
+          {{ dish.dish_name || 'empty' }}
+        </span>
+    </td>
+    
+    <td>
+        <span e-name="category" e-form="rowform" e-required>
+          {{ dish.dish_category || 'empty' }}
+        </span>
+    </td>
+    
+    <td>
+        <span editable-text="dish.dish_price" e-name="price" e-form="rowform" e-format="number" e-required>
+          {{ dish.dish_price || 'empty' }}
+        </span>
+    </td>
+    
+    <td>
+        <span editable-text="dish.discount" e-name="discount" e-form="rowform"  e-format="number" e-required>
+          {{ dish.discount || 'empty' }}
+        </span>
+    </td>
+    
+    <td>
+        <span  e-name="unit" e-form="rowform" e-required>
+          {{ dish.unit || 'empty' }}
+        </span>
+    </td>
+    
+    <td>
+        <span e-name="hot" e-form="rowform" e-required>
+          {{ showVegNonVeg(dish) }}
+          
+        </span>
+    </td>
+    
+    
+    <td class="select-td">
+        <span editable-select="dish.status" e-name="status" e-form="rowform" e-selectpicker
+              e-ng-options="s.value as s.text for s in statuses">
+          {{ showStatus(dish) }}
+        </span>
+    </td>
+    <td>
+      <form editable-form name="rowform" ng-show="rowform.$visible" class="form-buttons form-inline"
+            shown="inserted == dish">
+        <button type="submit" ng-disabled="rowform.$waiting" ng-click="save(rowform,dish)" class="btn btn-primary editable-table-button btn-xs">
+          Save
+        </button>
+        <button type="button" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()" class="btn btn-default editable-table-button btn-xs">
+          Cancel
+        </button>
+      </form>
+      <div class="buttons" ng-show="!rowform.$visible">
+        <button class="btn btn-primary editable-table-button btn-xs" ng-click="openEditDishModel(dish)">Edit</button>
+        <button class="btn btn-danger editable-table-button btn-xs" ng-click="removeDish(dish)">Delete</button>
+      </div>
+    </td>
+  </tr>
+  </tbody>
+</table>
+
+
+<!-- Modal window popup -->
+
+ <div class="modal fade in" id="dishModal" aria-hidden="false" style="display: block;" ng-show="showModal">  
+     <div class="modal-dialog">    
+         <div class="modal-content">
+         <button type="button" class="close" ng-click="closeDishItemAddModel()">&times;</button>
+         	<div class="modal-header" style="background-color: #337ab7;color: #fff;">   
+             Add Dish
+            </div>
+            <div class="modal-body" style="max-height: calc(100vh - 210px);overflow-y: auto;">
+            <form action="#" id="adddish" class="form-horizontal">
+					<div class="form-group row">
+						<label for=dish class="col-sm-3 col-form-label">Dish Name*:</label>
+						<div class="col-sm-6">
+							<input type="text" name="dish" id="dish" placeholder="Enter Dish Name" ng-model="dish"/>
+						</div>
+					</div>
+					
+					<div class="form-group row">
+						<label for="category" class="col-sm-3 col-form-label">Category Name*:</label>
+						<div class="col-sm-6">
+							<select multiple id="modelCategory" name="category" class="form-control" ng-model="category"></select>
+						</div>
+					</div>
+					
+					<div class="form-group row">
+						<label for="description" class="col-sm-3 col-form-label">Description:</label>
+						<div class="col-sm-6">
+							<input type="text" class="form-control" name="description" id="description" placeholder="Description" ng-model="description"/>
+						</div>
+					</div>
+					
+					<div class="form-group row">
+						<label for="price" class="col-sm-3 col-form-label">Price*:</label>
+						<div class="col-sm-6">
+							<input type="number" class="form-control" name="price" id="price" placeholder="Price" ng-model="price" />
+						</div>
+					</div>
+					
+					<div class="form-group row">
+					    <label for="calories" class="col-sm-3 col-form-label">Calories:</label>
+					    <div class="col-sm-6">
+					    	<input type="text" class="form-control" name="calories" id="calories" placeholder="Calories" ng-model="calories" format="number"/>
+					    </div>
+					  </div>
+					  
+					  <div class="form-group row">
+					    <label for="disc" class="col-sm-3 col-form-label">Discount:</label>
+					    <div class="col-sm-6">
+					    	<input type="text" class="form-control" name="disc" id="disc" placeholder="Discount" ng-model="discount" format="number"/>
+					    </div>
+					  </div>
+					  
+					  <div class="form-group row">
+					    <label for="ctime" class="col-sm-3 col-form-label">Avg Cooking Time:</label>
+					    <div class="col-sm-6">
+					    	<input type="text" class="form-control" name="ctime" id="Ctime" placeholder="Cooking time" ng-model="ctime"/>
+					    </div>
+					  </div>
+					
+					<!-- <div class="form-group row">
+						<label for="dishimage" class="col-sm-3 col-form-label">Dish Image:</label>
+						<div class="col-sm-6">
+							<input id="dishimage" name="dishimage" type="file" class="file-loading" file-model="fileToUpload"/>
+							<img id="myImg" src="#" alt="Dish Image" width="200px" height="200px"/>
+						</div>
+					</div> -->
+					<div class="form-group row">
+				 	 <label>Image:</label>
+				  		<button type="button" class="btn btn-primary" ng-click="showBrowseModal = !showBrowseModal"  style="padding-bottom: 4 px;">Browse</button>
+				  		 <img ng-src="{{foodSelectedImage}}" onerror="this.src='bower_components/img/no_image.png'" name="img" style="height:50px"/>
+					</div>
+					
+					<div class="form-group row">
+						<label for="optradio" class="col-sm-3 col-form-label">Non-Veg:</label>
+						<div class="col-sm-6">
+							 <label><input type="radio" name="optradio" ng-model="hot" ng-value="'true'">Yes</label>
+			  				 <label><input type="radio" name="optradio"ng-model="hot" ng-value="'false'">No</label>
+						</div>
+					</div>
+					
+					<div class="form-group row">
+						<label for="ingredients" class="col-sm-3 col-form-label">Ingredients:</label>
+						<div class="col-sm-6">
+							<select multiple id="modelIngredients" name="ingredients" class="form-control" ng-model="ingredients"></select>
+						</div>
+					</div>
+					
+					<div class="form-group row">
+						<label for="optradio1" class="col-sm-3 col-form-label">Status*:</label>
+						<div class="col-sm-6" class="btn-group">
+							<label><input type="radio" name="optradio1" ng-model="status" ng-value="'true'">Active</label>
+						    <label><input type="radio" name="optradio1" ng-model="status" ng-value="'false'">Inactive</label>
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<div class="btn-group">
+							<button type="submit" class="btn btn-info spacing">Add Dish</button>
+							<button type="button" class="btn btn-primary" ng-click="closeDishItemAddModel()">Cancel</button>  
+						</div>
+					</div>
+				</form>
+            </div>
+         </div>  
+     </div>
+ </div>
+ 
+ <!-- Edit dish modal -->
+ 
+ <div class="modal fade in" id="dishEditModal" aria-hidden="false" style="display: block;" ng-show="showEditModal">  
+     <div class="modal-dialog">    
+         <div class="modal-content">
+         <button type="button" class="close" ng-click="showEditModal=false">&times;</button>
+         	<div class="modal-header" style="background-color: #337ab7;color: #fff;">   
+             Edit Dish
+            </div>
+            <div class="modal-body" style="max-height: calc(100vh - 210px);overflow-y: auto;">
+            <form ng-submit="editSave()" id="editdish" class="form-horizontal">
+					<div class="form-group row">
+						<label for=dish class="col-sm-3 col-form-label">Dish Name*:</label>
+						<div class="col-sm-6">
+							<input type="text" name="dish" id="dish" placeholder="Enter Dish Name" ng-model="editdish"/>
+							<input type="text" name="dishid" id="dishid" ng-model="editdishid" style="display:none"/>
+						</div>
+					</div>
+					
+					<div class="form-group row">
+						<label for="category" class="col-sm-3 col-form-label">Category Name*:</label>
+						<div class="col-sm-6">
+							<span>{{editcategory}}</span>
+							<select multiple id="editmodelCategory" name="category" class="form-control" ng-model="categorydropown"></select>
+						</div>
+					</div>
+					
+					<div class="form-group row">
+						<label for="description" class="col-sm-3 col-form-label">Description:</label>
+						<div class="col-sm-6">
+							<input type="text" class="form-control" name="description" id="description" placeholder="Description" ng-model="editdescription"/>
+						</div>
+					</div>
+					
+					<div class="form-group row">
+						<label for="price" class="col-sm-3 col-form-label">Price*:</label>
+						<div class="col-sm-6">
+							<input type="text" class="form-control" name="price" id="price" placeholder="Price" ng-model="editprice" format="number"/>
+						</div>
+					</div>
+					
+					<div class="form-group row">
+					    <label for="calories" class="col-sm-3 col-form-label">Calories:</label>
+					    <div class="col-sm-6">
+					    	<input type="text" class="form-control" name="calories" id="calories" placeholder="Calories" ng-model="editcalories" format="number"/>
+					    </div>
+					  </div>
+					  
+					  <div class="form-group row">
+					    <label for="disc" class="col-sm-3 col-form-label">Discount:</label>
+					    <div class="col-sm-6">
+					    	<input type="text" class="form-control" name="disc" id="disc" placeholder="Discount" ng-model="editdiscount" format="number"/>
+					    </div>
+					  </div>
+					  
+					  <div class="form-group row">
+					    <label for="ctime" class="col-sm-3 col-form-label">Avg Cooking Time:</label>
+					    <div class="col-sm-6">
+					    	<input type="text" class="form-control" name="ctime" id="Ctime" placeholder="Cooking time" ng-model="editctime"/>
+					    </div>
+					  </div>
+					
+					<!-- <div class="form-group row">
+						<label for="dishimage" class="col-sm-3 col-form-label">Dish Image:</label>
+						<div class="col-sm-6">
+							<input id="dishimage" name="dishimage" type="file" class="file-loading" file-model="fileToUpload"/>
+							<img id="myImg" src="#" alt="Dish Image" width="200px" height="200px"/>
+						</div>
+					</div> -->
+					<div class="form-group row">
+				 	 <label>Image:</label>
+				  		<button type="button" class="btn btn-primary" ng-click="showBrowseModal = !showBrowseModal"  style="padding-bottom: 4 px;">Browse</button>
+				  		 <img ng-src="{{foodSelectedImage || editImg}}" onerror="this.src='bower_components/img/no_image.png'" name="img" style="height:50px" ng-model="editImg"/>
+					</div>
+					
+					<div class="form-group row">
+						<label for="optradio" class="col-sm-3 col-form-label">Non-Veg:</label>
+						<div class="col-sm-6">
+							 <label><input type="radio" name="optradio" ng-model="hot" ng-value="'true'">Yes</label>
+			  				 <label><input type="radio" name="optradio"ng-model="hot" ng-value="'false'">No</label>
+						</div>
+					</div>
+					
+					<div class="form-group row">
+						<label for="ingredients" class="col-sm-3 col-form-label">Ingredients:</label>
+						<div class="col-sm-6">
+							<span>{{ingredients}}</span>
+							<select multiple id="editmodelIngredients" name="ingredients" class="form-control" ng-model="editingredients"></select>
+						</div>
+					</div>
+					
+					<div class="form-group row">
+						<label for="optradio1" class="col-sm-3 col-form-label">Status*:</label>
+						<div class="col-sm-6" class="btn-group">
+							<label><input type="radio" name="optradio1" ng-model="editstatus" ng-value="'true'">Active</label>
+						    <label><input type="radio" name="optradio1" ng-model="editstatus" ng-value="'false'">Inactive</label>
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<div class="btn-group">
+							<button type="submit" class="btn btn-info spacing"  >Save</button>
+							<button type="button" class="btn btn-primary" ng-click="showEditModal=!showEditModal">Cancel</button>  
+						</div>
+					</div>
+				</form>
+            </div>
+         </div>  
+     </div>
+ </div>
+ 
+  <div class="modal fade in" aria-hidden="false" style="display: block" ng-show="showBrowseModal">  
+     <div class="modal-dialog modal-lg">    
+         <div class="modal-content">
+         	<button type="button" class="close" ng-click="showBrowseModal=false">&times;</button>
+         	<div class="modal-header" style="background-color: #337ab7;color: #fff;">   
+             Select Image
+            </div>
+           <!--  <div class="modal-body" style="height: 500px; overflow-y: scroll">
+            	<div   ng-repeat="foodItemImages in foodItemImagesArray">
+            		<img ng-src="{{ foodItemImages }}" style="height:50px" ng-click="functionToBeExecuted(foodItemImages)" />
+        		</div>
+            </div> -->
+            <div class="modal-body" style="height: 500px; overflow-y: scroll">
+        		<table id="barcategory" class="table table-bordered table-hover table-condensed">
+				  <tr ng-repeat="foodItemImages in foodItemImagesArray">
+				    <td class="zoom">
+				        <img ng-src="{{ foodItemImages.img1 }}" style="height:80px" ng-click="functionToBeExecuted(foodItemImages.img1)" />
+				    </td>
+				    <td class="zoom">
+						<img ng-src="{{ foodItemImages.img2 }}" style="height:80px" ng-click="functionToBeExecuted(foodItemImages.img2)" />
+					</td>
+				    <td class="zoom">
+				       <img ng-src="{{ foodItemImages.img3 }}" style="height:80px" ng-click="functionToBeExecuted(foodItemImages.img3)" />
+				    </td>
+				    <td class="zoom">
+				        <img ng-src="{{ foodItemImages.img4 }}" style="height:80px" ng-click="functionToBeExecuted(foodItemImages.img4)" />
+				    </td>
+				  </tr>
+				</table>
+            </div>
+         </div>  
+     </div>
+ </div>

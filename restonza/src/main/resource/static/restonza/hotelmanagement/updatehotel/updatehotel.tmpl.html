@@ -1,0 +1,161 @@
+<div id="updateHotel">
+		<div class="form-group row">
+			<label for="filterstatus" class="col-sm-2 col-form-label">Filter by Status:</label>
+			<div class="col-sm-2">
+				<select class="form-control" ng-model="filterstatus" >
+					<option value="">All</option>
+					<option value="Active">Active</option>
+					<option value="Inactive">Inactive</option>
+					<option value="Expired">Expired</option>
+				</select>
+			</div>
+		</div>
+
+	<table class="table table-bordered table-hover table-condensed">
+	  <tr>
+	    <th># Hotel id</th>
+	    <th>Hotel Name</th>
+	    <th>Hotel Type</th>
+	    <th>Subscription plan</th>
+	    <th>Subscription Start Date</th>
+	    <th>Subscription End Date</th>
+	    <th>Status</th>
+	    <th>Action</th>
+	  </tr>
+	  <tr ng-repeat="hotel in hotels| filter:{'status' : filterstatus}" class="editable-row" >
+	    <td class="table-id" ng-model="hotel.id">
+	        {{hotel.id}}
+	    </td>
+	    <td>
+	        <span editable-text="hotel.hotelname" e-name="name" e-form="rowform" e-required>
+	          {{ hotel.hotelname || 'empty' }}
+	        </span>
+	    </td>
+	    <td>
+	        <span editable-text="hotel.hoteltype" e-name="hoteltype" e-form="rowform" e-required>
+	          {{ hotel.hoteltype || 'empty' }}
+	        </span>
+	    </td>
+	    <td>
+	        <span editable-text="hotel.hotelsubscription" e-name="hotelsubscription" e-form="rowform" e-required>
+	          {{ hotel.hotelsubscription || 'empty' }}
+	        </span>
+	    </td>
+	    <td>
+	        <span editable-text="hotel.startdate" e-name="startdate" e-form="rowform" e-required>
+	          {{ hotel.startdate || 'empty' }}
+	        </span>
+	    </td>
+	    <td>
+	        <span e-name="enddate" e-form="rowform" e-required>
+	          {{ hotel.enddate || 'empty' }}
+	        </span>
+	    </td>
+	    <td class="select-td">
+	        <span editable-select="hotel.status" e-name="status" e-form="rowform" e-selectpicker
+	              e-ng-options="s.value as s.text for s in statuses">
+	          {{ showStatus(hotel) }}
+	        </span>
+	    </td>
+	    <td>
+	      <form editable-form name="rowform" ng-show="rowform.$visible" class="form-buttons form-inline"
+	            shown="inserted == hotel">
+	        <button type="submit" ng-disabled="rowform.$waiting" class="btn btn-primary editable-table-button btn-xs">
+	          Save
+	        </button>
+	        <button type="button" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()" class="btn btn-default editable-table-button btn-xs">
+	          Cancel
+	        </button>
+	      </form>
+	      <div class="buttons" ng-show="!rowform.$visible">
+	        <button class="btn btn-primary editable-table-button btn-xs" ng-click="editHotel($index)">Edit</button>
+	        <button class="btn btn-danger editable-table-button btn-xs" confirmed-click="removeHotel(hotel.id)" 
+    		ng-confirm-click="Are you sure you want to delete hotel?">Delete</button>
+	      </div>
+	    </td>
+	  </tr>
+	</table>
+	
+	<!-- Delete modal window popup -->
+	
+	<!-- <div id="confirm" class="modal hide fade in" style="display: block;" ng-show="showConfirmation">
+	  <div class="modal-body">
+	    Are you sure want to delete hotel ?
+	  </div>
+	  <div class="modal-footer">
+	    <button type="button" data-dismiss="modal" class="btn btn-primary" id="delete">Delete</button>
+	    <button type="button" data-dismiss="modal" class="btn" ng-click="showModal=false">Cancel</button>
+	  </div>
+	</div> -->
+	
+	<!-- Modal window popup -->
+	
+	 <div id="updateModal" class="modal fade in" aria-hidden="false" style="display: block;" ng-show="showModal">  
+	     <div class="modal-dialog">    
+	         <div class="modal-content">
+	         	<div class="modal-header" style="background-color: #337ab7;color: #fff;">   
+	             Edit Hotel
+	            </div>
+	            <div class="modal-body">
+	           		<form action="#" id="updateSelectedHotel" class="form-horizontal">
+	           			<div class="form-group row">
+							<label for="hoteltype" class="col-sm-4 col-form-label">Hotel ID:</label>
+							<div class="col-sm-6">
+								<span id="hotelid">{{editdata.id}}</span>
+							</div>
+						</div>
+	           		
+	           			<div class="form-group row">
+							<label for="hoteltype" class="col-sm-4 col-form-label">Hotel Type:</label>
+							<div class="col-sm-6">
+								<select name="hoteltype" id="hoteltype"></select>
+							</div>
+						</div>
+					
+						<div class="form-group row">
+							<label for="hotelsubscription" class="col-sm-4 col-form-label">Hotel Subscription Plan:</label>
+							<div class="col-sm-6">
+								<select name="hotelsubscription" id="hotelsubscription"></select>
+							</div>
+						</div>
+						
+						<div class="form-group row">
+							<label for="startdate" class="col-sm-4 col-form-label">Plan start Date:</label>
+							<div class="col-sm-6">
+								<input type="text" name="startdate" id="startdate" placeholder="Plan Start Date" value="{{editdata.startdate}}"/>
+							</div>
+						</div>
+
+						<div class="form-group row">
+							<label for="hotelstatus" class="col-sm-4 col-form-label">Status:</label>
+							<div class="col-sm-6">
+								<div id="hotelstatus" class="btn-group">
+									<input name="hotelstatus" type="radio" value="active" ng-model="hotelstatus"/><label class="radiobtn">Active</label>
+									<input name="hotelstatus" type="radio" value="inactive" ng-model="hotelstatus"/><label class="radiobtn">Inactive</label>
+								</div>
+							</div>
+						</div>
+						
+						<div class="form-group row">
+							<label for="barpriviledge" class="col-sm-4 col-form-label">Drinks Priviledge:</label>
+							<div class="col-sm-6">
+								<div id="barpriviledge" class="btn-group">
+									<input name="barpriviledge" type="radio" value="active" ng-model="barpriviledge"/><label class="radiobtn">Active</label>
+									<input name="barpriviledge" type="radio" value="inactive" ng-model="barpriviledge"/><label class="radiobtn">Inactive</label>
+								</div>
+							</div>
+						</div>
+						
+						<div class="form-group">
+							<div class="btn-group">
+								<button type="submit" class="btn btn-info spacing">Update Hotel</button>
+								<button type="button" class="btn btn-primary" ng-click="showModal=false">Close</button>  
+								<!-- <button type="reset" class="btn btn-danger spacing">Reset Order</button> -->
+							</div>
+						</div>
+					</form>
+				</div>
+	         </div>  
+	     </div>
+	 </div>
+ </div>

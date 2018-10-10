@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+<head>
+<!-- CSS entry -->
+<title>Billy</title>
+<link rel="icon" type="image/png" href="bower_components/img/15x15.png">
+<link rel="stylesheet" href="bower_components/css/bootstrap.min.css">
+<link rel="stylesheet" href="bower_components/css/restonza.css">
+<link rel="stylesheet" href="bower_components/css/angular-material.min.css">
+<link rel="stylesheet" href="bower_components/css/xeditable.css">
+<link rel="stylesheet" href="bower_components/css/chartlist.min.css">
+<link rel="stylesheet" href="bower_components/css/select2.min.css">
+<link rel="stylesheet" href="bower_components/css/jquery-ui.min.css">
+<link rel="stylesheet" href="bower_components/js/plugins/export/export.css">
+<link rel="stylesheet" href="bower_components/css/font-awesome.min.css">
+<link rel="stylesheet" href="bower_components/css/daterangepicker.min.css">
+<link rel="stylesheet" href="bower_components/css/bootstrap-theme.min.css">
+<link rel="stylesheet" href="bower_components/css/angular-growl.min.css">
+<link rel="stylesheet" href="https://www.amcharts.com/lib/3/plugins/export/export.css" type="text/css" media="all" />
+<!-- Mandatory JS entry-->
+<script src="bower_components/js/jquery.min.js"></script>
+<script src="bower_components/js/bootstrap.min.js"></script>
+<script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async=""></script>
+<script>
+//var abc = document.getElementById("hotelInfo").innerHTML;
+
+var OneSignal = window.OneSignal || [];
+OneSignal.push(function() {
+	  OneSignal.init({
+	      appId: "8c2242d9-01e7-47ab-b246-d8f247873da3",
+	      autoRegister: false,
+	      notifyButton: {
+	        enable: true,
+	      },
+	    });
+	   OneSignal.on('subscriptionChange', function(isSubscribed) {
+	    if (isSubscribed) {
+	      OneSignal.getUserId( function(userId) {
+	    	  console.log(userId);
+	    	  console.log(document.getElementById("hotelInfo").innerHTML +"--"+ document.getElementById("serverURL").innerHTML);
+	    	  console.log(document.getElementById("serverURL").innerHTML + 
+	    			  "/registerOneSignalUserId/"+document.getElementById("hotelInfo").innerHTML+"/"+userId);
+	    	  var serverurl = document.getElementById("serverURL").innerHTML+"/registerOneSignalUserId/"+document.getElementById("hotelInfo").innerHTML+"/"+userId;
+	    	  $.ajax({url:serverurl, success: function(result){
+	    	       alert("Notification Registration Successful !");
+	    	    }});
+	      });
+	    }
+	  }); 
+	});
+</script>
+</head>
+<body ng-app="restonza">
+<div class="wrapper">
+
+<!-- loader -->
+	<div id="divLoading">
+			<p style="position: absolute; color: white; top: 50%; left: 45%;">Please wait.....</p>
+	</div>
+	<div class="container" ng-controller="MainController">
+		<div ng-switch="role">
+			<div ng-switch-when="superadmin">
+				<div class="row" id= "mainsidebarcontainer" ng-controller="SidebarController" ng-include='"restonza/templates/sidebar/superadmin.sidebar.tmpl.html"'></div>
+			</div>
+			
+			<div ng-switch-when="admin">
+				<div class="row" id= "mainsidebarcontainer" ng-controller="SidebarController" ng-include='"restonza/templates/sidebar/admin.sidebar.tmpl.html"'></div>
+			</div>
+			
+			<div ng-switch-when="waiter">
+				<div class="row" id= "mainsidebarcontainer" ng-controller="SidebarController" ng-include='"restonza/templates/sidebar/waiter.sidebar.tmpl.html"'></div>
+			</div>
+			
+			<div ng-switch-when="backkitchen">
+				<div class="row" id= "mainsidebarcontainer" ng-controller="SidebarController" ng-include='"restonza/templates/sidebar/backkitchen.sidebar.tmpl.html"'></div>
+			</div>
+			
+			<div ng-switch-when="restrobaradmin">
+				<div class="row" id= "mainsidebarcontainer" ng-controller="SidebarController" ng-include='"restonza/templates/sidebar/restrobaradmin.sidebar.tmpl.html"'></div>
+			</div>
+			
+			<div ng-switch-when="barstaff">
+				<div class="row" id= "mainsidebarcontainer" ng-controller="SidebarController" ng-include='"restonza/templates/sidebar/barstaff.sidebar.tmpl.html"'></div>
+			</div>
+			
+			<div id="main" class="row">
+				<div class="row">
+					<div ng-switch-when="admin|restrobaradmin" ng-switch-when-separator="|">
+						<div id="fixedheader" ng-controller="GetUpdatedDataController" ng-include='"restonza/templates/fixedheadermenubar.tmpl.html"'></div>
+					</div>
+					<div ng-if="role!=''">
+						<div class="dropdown pull-right">
+							<div class="user two"></div>
+							 <div class="dropdown-content">
+							    <a href="#/editProfile">View Profile</a>
+							    <button class="linkbutton" ng-click="logoutlink()">Logout</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div id="view" class="row viewarea scrollbar" ng-view style="overflow-y: scroll; height:600px; width:1250px;"></div>
+			</div>
+			
+			<!-- <div id="main" class="row">
+				<div class="row">
+					<div ng-switch-when="restrobaradmin">
+						<div id="fixedheader" ng-controller="GetUpdatedDataController" ng-include='"restonza/templates/fixedheadermenubar.tmpl.html"'></div>
+					</div>
+					<div ng-if="role!=''">
+						<div class="dropdown pull-right">
+							<div class="user two"></div>
+							 <div class="dropdown-content">
+							    <a href="#/editProfile">View Profile</a>
+							    <a href="#/logout">Logout</a>
+							     <a href="#">{{hotelInfo}}</a>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div id="view" class="row viewarea scrollbar" ng-view style="overflow-y: scroll; height:600px; width:1250px;"></div>
+			</div> -->
+		</div>
+	</div>
+</div>
+	<!-- JS library addition -->
+<script src="bower_components/js/angular.min.js"></script>
+<script type="text/javascript" src="bower_components/js/ui-bootstrap-tpls-2.5.0.min.js"></script>
+<script type="text/javascript" src="bower_components/js/angular-cookies.min.js"></script>
+<script type="text/javascript" src="bower_components/js/angular-ui-router.min.js"></script>
+<script src="bower_components/js/angular-ui.min.js"></script>
+<script src="bower_components/js/angular-route.min.js"></script>
+<script src="bower_components/js/xeditable.js"></script>
+<script src="bower_components/js/chartist.min.js"></script>
+<script src="bower_components/js/select2.min.js"></script>
+<script src="bower_components/js/jquery.validate.min.js"></script>
+<script src="bower_components/js/additional-methods.min.js"></script>
+<script src="bower_components/js/jquery-ui.min.js"></script>
+<script src="bower_components/js/jquery.bootstrap-growl.min.js"></script>
+<script src="bower_components/js/jquery.maskedinput.js"></script>
+<script src="bower_components/js/amcharts.js"></script>
+<script src="bower_components/js/serial.js"></script>
+<script src="bower_components/js/plugins/export/export.min.js"></script>
+<script src="bower_components/js/light.js"></script>
+<script src="bower_components/js/jquery.PrintArea.js"></script>
+<script src="bower_components/js/jquery.tabletojson.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-min.js" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+<script src="bower_components/js/daterangepicker.min.js"></script>
+<script src="bower_components/js/jquery.json.min.js"></script>  <!-- For Date range picker is slaes report  -->
+<script src="bower_components/js/table-export-directive.js"></script>
+<script src="bower_components/js/table-export-option-directive.js"></script>
+<script src="bower_components/js/smartTableDirectives.js"></script>
+<script src="bower_components/js/table-export.js"></script>
+<script src="bower_components/js/jquery.base64.js"></script>
+<script src="bower_components/js/html2canvas.js"></script>
+<script src="bower_components/js/jspdf.js"></script>
+<script src="bower_components/js/base64.js"></script>
+<script src="bower_components/js/sprintf.js"></script>
+<script src="bower_components/js/smart-table.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.15/angular-animate.min.js"></script>
+<script src="bower_components/js/angular-growl.min.js"></script>
+
+<!-- Angular component addition -->
+<script src="restonza/restonza.js"></script>
+<script src="restonza/restonza.config.js"></script>
+<script src="restonza/service/autorize.service.js"></script>
+<script src="restonza/service/print.service.js"></script>
+<script src="restonza/service/restonza.constants.js"></script>
+<script src="restonza/common/common.ctrl.js"></script>
+<script src="restonza/common/number-only.js"></script>
+<script src="restonza/common/angular-confirm.js"></script>
+<script src="restonza/common/custom-filter.js"></script>
+<script src="restonza/service/main.ctrl.js"></script>
+<script src="restonza/login/login.ctrl.js"></script>
+<script src="restonza/home/home.ctrl.js"></script>
+<script src="restonza/placeorder/neworder/neworder.ctrl.js"></script>
+<script src="restonza/placeorder/updateorder/updateorder.ctrl.js"></script>
+<script src="restonza/feedback/feedback.ctrl.js"></script>
+<script src="restonza/dishmanagement/dishesmanagement/dishmanagement.ctrl.js"></script>
+<script src="restonza/dishmanagement/categorymanagement/categorymanagement.ctrl.js"></script>
+<script src="restonza/dishmanagement/ingredientsmanagement/ingredientmanagement.ctrl.js"></script>
+<script src="restonza/generalconfiguration/tablesetting/tablesetting.ctrl.js"></script>
+<script src="restonza/usermanagement/adduser/adduser.ctrl.js"></script>
+<script src="restonza/usermanagement/edituser/edituser.ctrl.js"></script>
+<script src="restonza/usermanagement/manageusers/manageusers.ctrl.js"></script>
+<script src="restonza/hotelmanagement/addhotel/addhotel.ctrl.js"></script>
+<script src="restonza/hotelmanagement/updatehotel/updatehotel.ctrl.js"></script>
+<script src="restonza/adsmanagement/adsmanagement.ctrl.js"></script>
+<script src="restonza/greetingmanagement/greetingmanagement.ctrl.js"></script>
+<script src="restonza/ordermanagement/ordermanagement.ctrl.js"></script>
+<script src="restonza/manageapproval/adsapproval/publishedCampaigns.ctrl.js"></script>
+<script src="restonza/manageapproval/adsapproval/approveCampaigns-superadmin.ctrl.js"></script>
+<script src="restonza/manageapproval/greetingsapproval/greetingsapproval.ctrl.js"></script>
+<script src="restonza/billmanagement/billmanagement.ctrl.js"></script>
+<script src="restonza/reports/hotelanalysis/hotelanalysis.ctrl.js"></script>
+<script src="restonza/pendingorders/pendingorder.ctrl.js"></script>
+<script src="restonza/dashboard/dashboard.ctrl.js"></script>
+<script src="restonza/reports/customreports/customreports.ctrl.js"></script>
+<script src="restonza/reports/customhotelanalysis/customhotelanalysis.ctrl.js"></script>
+<script src="restonza/ordermanagement/placedorder/placedorder.ctrl.js"></script>
+<script src="restonza/ordermanagement/deliveredorder/deliveredorder.ctrl.js"></script>
+<script src="restonza/ordermanagement/confirmedorder/confirmedorder.ctrl.js"></script>
+<script src="restonza/ordermanagement/billedorder/billedorder.ctrl.js"></script>
+<script src="restonza/waiterwatermanagement/watermanagement.ctrl.js"></script>
+<script src="restonza/waiterwatermanagement/waitermanagement.ctrl.js"></script>
+<script src="restonza/templates/fixedheadermenubar.ctrl.js"></script>
+<script src="restonza/generalconfiguration/taxsetting.ctrl.js"></script>
+<script src="restonza/generalconfiguration/qrcode/qrcode.ctrl.js"></script>
+<script src="restonza/reports/admin/customreports/customreports.ctrl.js"></script>
+<script src="restonza/hotelMenuBulkUpload/hotelMenuBulkUpload.ctrl.js"></script>
+<script src="restonza/reports/salesreport/admin/salesreports.ctrl.js"></script>
+<script src="restonza/reports/salesreport/salesreports.ctrl.js"></script>
+<script src="restonza/barmenumanagement/barcategory/barcategory.ctrl.js"></script>
+<script src="restonza/barmenumanagement/baritem/baritem.ctrl.js"></script>
+<script src="restonza/barmenumanagement/barordermanagement/newbarorder/newbarorder.ctrl.js"></script>
+<script src="restonza/barmenumanagement/barordermanagement/billbarorder/billbarorder.ctrl.js"></script>
+<script src="restonza/allcustomers/allcustomers.ctrl.js"></script>
+<script src="restonza/reports/superadmin/paymentreports/paymentreports.ctrl.js"></script>
+
+<script src="restonza/barmenumanagement/barordermanagement/placedbarorder/placedbarorder.ctrl.js"></script>
+<script src="restonza/barmenumanagement/barordermanagement/confirmbarorder/confirmbarorder.ctrl.js"></script>
+<script src="restonza/barmenumanagement/barordermanagement/pendingbarorder/pendingbarorder.ctrl.js"></script>
+<script src="restonza/barmenumanagement/barordermanagement/updatebarorder/updatebarorder.ctrl.js"></script>
+
+<!-- Export Table imports -->
+
+</body>
+</html> 

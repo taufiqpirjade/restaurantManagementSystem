@@ -1,0 +1,72 @@
+<div id="getReport">
+	<!-- <form  id="addhotelform" class="form-horizontal"> -->
+	<!--action="/restonza/downloadSalesPdf"-->
+	<div class="row">
+		<div class="col-sm-6">
+			<div class="form-group row">
+			    <label for="hotelname" class="col-sm-2 col-form-label">Hotel No:</label>
+			    <div class="col-sm-2">
+			      <input name="hotelname" id= "hotelname" value="{{hotelno}}" readonly="readonly"/>
+			    </div>
+			  </div>
+			<div class="form-group row">
+					<label for="fromdate" class="col-sm-2 col-form-label">Select Period:</label>
+					<div class="col-sm-6">
+						<input class="daterangepicker-field" id="daterange"></input>
+					</div>
+			</div>
+				
+			<div class="form-group">
+				<div class="btn-group">
+					<button class="btn btn-primary" ng-click="getPdfReport();" class="btn btn-info spacing">Generate Sales Report</button>
+				</div>
+				<div class="btn-group">
+					<button class="btn btn-primary" ng-click="getPdfDownload();" class="btn btn-info spacing">Download Sales Report</button>
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-6">	
+			<div class="col-sm-3" style="border: 2px solid black;-webkit-border-radius: 24px 24px 22px 21px;-moz-border-radius: 24px 24px 22px 21px;border-radius: 24px 24px 22px 21px;padding: 10px;
+														box-shadow: 5px 10px #888888;">
+			      <label class="col-sm-2 col-form-label">Total Earning: {{totalEarningAmount}}</label>
+			 </div>
+			<div class="col-sm-3" style="border: 2px solid black;padding: 10px;-webkit-border-radius: 24px 24px 22px 21px;-moz-border-radius: 24px 24px 22px 21px;border-radius: 24px 24px 22px 21px;
+	    												box-shadow: 5px 10px #888888;">
+			      <label class="col-sm-2 col-form-label">Total Orders: {{totalorderCount}}</label>
+			 </div>
+		</div>
+	</div>
+	<div class=row id="exportthis">
+		<div class="col-sm-12">
+			<div id="chartdiv" style="width:100%;height:500px;width:1000px;">
+			</div>
+		</div>
+	</div>
+	<!-- </form> -->
+	
+	<div>
+	<table class="table table-bordered table-hover table-condensed" fixed-header>
+	  <tr>
+	    <th>#</th>
+	    <th>Date</th>
+	    <th>Total Orders</th>
+	    <th>Total Earnings</th>
+	  </tr>
+	  
+	  <tr ng-repeat="data in salesTableData" class="editable-row">
+	    <td class="table-id">
+	        {{$index+1}}
+	    </td>
+	    <td class="shrink">
+	          {{ data.date|| 'empty' }}
+	    </td>
+	    <td class="shrink">
+	          {{ data.count || 'empty' }}
+	    </td>
+	    <td class="shrink">
+	          {{ data.earning || 'empty' }}
+	    </td>
+	  </tr>
+	</table>
+	</div>
+</div>

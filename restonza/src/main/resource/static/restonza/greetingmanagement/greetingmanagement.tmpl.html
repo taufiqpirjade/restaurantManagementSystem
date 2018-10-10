@@ -1,0 +1,110 @@
+<div class="add-row-editable-table">
+  <button class="btn btn-primary" ng-click="showModal = !showModal">Add Greeting</button>
+</div>
+<table class="table table-bordered table-hover table-condensed">
+  <tr>
+    <th># Serial No</th>
+     <th>Greeting Name</th>
+    <th>Greeting Description</th>
+    <th>Banner Img</th>
+    <th>status</th>
+    <th>Action</th>
+  </tr>
+  <tr ng-repeat="greeting in greetings" class="editable-row">
+    <td class="table-id">
+        {{$index+1}}
+    </td>
+    <td class="table-id" ng-model="greeting.greetingname">
+	        {{greeting.greetingname}}
+    </td>
+    <td class="table-id" ng-model="greeting.description">
+        {{greeting.description || 'No description'}}
+    </td>
+    <td class="table-id">
+       <img ng-src="data:image/jpeg;base64,{{greeting.greetingimg}}" style="height:50px"/>
+    </td>
+    <td class="select-td">
+        <span editable-select="greeting.status" e-name="status" e-form="rowform" e-selectpicker
+              e-ng-options="s.value as s.text for s in statuses">
+          {{ showStatus(greeting) }}
+        </span>
+    </td>
+    <td>
+      <form editable-form name="rowform" ng-show="rowform.$visible" class="form-buttons form-inline"
+            shown="inserted == greeting">
+        <button type="submit" ng-disabled="rowform.$waiting" class="btn btn-primary editable-table-button btn-xs">
+          Save
+        </button>
+        <button type="button" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()" class="btn btn-default editable-table-button btn-xs">
+          Cancel
+        </button>
+      </form>
+      <div class="buttons" ng-show="!rowform.$visible">
+        <button class="btn btn-primary editable-table-button btn-xs" ng-click="editGreeting($index)">Edit</button>
+        <button class="btn btn-danger editable-table-button btn-xs" ng-click="removeGreeting(greeting.id)">Delete</button>
+      </div>
+    </td>
+  </tr>
+</table>
+
+
+<!-- Modal window popup -->
+ <div id="addupdate1" class="modal fade in" aria-hidden="false" style="display: block;" ng-show="showModal">  
+     <div class="modal-dialog">    
+         <div class="modal-content">
+         <button type="button" class="close" ng-click="showModal=false">&times;</button>
+         	<div class="modal-header" style="background-color: #337ab7;color: #fff;">   
+             New Greeting
+            </div>
+            <div class="modal-body">
+           		<form action="#" id="addgreetings" class="form-horizontal">
+					<div class="form-group row">
+						<label for="greetingname" class="col-sm-2 col-form-label">Greeting Name:</label>
+						<div class="col-sm-6">
+							<input type="text" name="greetingname" id="greetingname" value="{{editdata.greetingname}}" />
+						</div>
+					</div>
+	
+					<div class="form-group row">
+						<label for="description" class="col-sm-2 col-form-label">Description:</label>
+						<div class="col-sm-6">
+							<textarea name="description" id="description">{{editdata.description}}</textarea>
+						</div>
+					</div>
+	
+					<div class="form-group row">
+						<label for="banner" class="col-sm-2 col-form-label">Banner:</label>
+						<div class="col-sm-6">
+							<input id="banner" name="banner" type="file" class="file-loading" ng-model = "myFile"/>
+							<img id="myImg" name="imgsrc" ng-src="data:image/jpeg;base64,{{editdata.greetingimg}}" alt="Banner Image" width="200px" height="200px"/>
+						</div>
+					</div>
+					
+					<div class="form-group row">
+						<label for="greetingDate" class="col-sm-2 col-form-label">Date:</label>
+						<div class="col-sm-6">
+							<input type="text" name="greetingDate" id="greetingDate" placeholder="Greeting Date" value="{{editdata.greetingdate}}"/>
+						</div>
+					</div>
+					
+					<div class="form-group row">
+						<label for="greetingstatus" class="col-sm-2 col-form-label">Status:</label>
+						<div class="col-sm-6">
+							<div id="adstatus" class="btn-group">
+								<input name="greetingstatus" type="radio" value="active" checked="checked" /><label class="radiobtn">Active</label>
+								<input name="greetingstatus" type="radio" value="inactive" /><label class="radiobtn">Inactive</label>
+							</div>
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<div class="btn-group">
+							<button type="submit" class="btn btn-info spacing">Add/Update Greeting</button>
+							<button type="button" class="btn btn-primary" ng-click="resetAll()">Close</button>  
+						</div>
+					</div>
+				</form>
+			</div>
+         </div>  
+     </div>
+ </div>

@@ -1,0 +1,175 @@
+<div class="add-row-editable-table">
+  <button class="btn btn-primary" ng-click="showModal = !showModal">Add Category</button>
+  <button class="btn btn-primary" ng-click="updateCategorySequence()">Update Sequence</button>
+</div>
+<table id="dishCategory" class="table table-bordered table-hover table-condensed">
+<thead>
+  <tr class="tableheadercolor">
+    <th>
+    <a class="normallink" ng-click="sortType = 'sequence'; sortReverse = !sortReverse"> # 
+				   <span ng-show="sortType == 'sequence' && !sortReverse" class="fa fa-caret-down"></span> 
+				   <span ng-show="sortType == 'sequence' && sortReverse" class="fa fa-caret-up"></span>
+	</a>
+    </th>
+     <th style="display:none">Id</th>
+    <th>Name</th>
+    <th>Status</th>
+    <th>Action</th>
+  </tr>
+  </thead>
+  <tbody ui:sortable ng:model="categories">
+  <tr  ng-repeat="category in (filterItems = (categories| filter:{}))"  style="cursor: move;">
+    <td class="table-id">
+       {{ category.sequence}}
+    </td>
+    <td style="display:none">{{ category.category_id}}</td>
+    <td>
+        <span editable-text="category.category_name" id="category{{$index}}" ng-model="inputVal" e-name="name" e-form="rowform" e-required>
+          {{ category.category_name || 'empty' }}
+        </span>
+    </td>
+    <td class="select-td">
+        <span editable-select="category.status" e-name="status" e-form="rowform" e-selectpicker
+              e-ng-options="s.value as s.text for s in statuses">
+          {{ showStatus(category) }}
+        </span>
+    </td>
+    
+    <td>
+      <form editable-form name="rowform" ng-show="rowform.$visible" class="form-buttons form-inline"
+            shown="inserted == category">
+        <button type="button" ng-disabled="rowform.$waiting"  ng-click="save(rowform,category)" class="btn btn-primary editable-table-button btn-xs">
+          Save
+        </button>
+        <button type="button" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()" class="btn btn-default editable-table-button btn-xs">
+          Cancel
+        </button>
+      </form>
+      <div class="buttons" ng-show="!rowform.$visible">
+         <button class="btn btn-primary editable-table-button btn-xs" ng-click="openCategoryEditModel(category)">Edit</button>
+        <button class="btn btn-danger editable-table-button btn-xs" ng-click="removeCateogory($index)">Delete</button>
+      </div>
+    </td>
+  </tr>
+  </tbody>
+</table>
+
+
+<!-- Modal window popup -->
+
+ <div class="modal fade in" aria-hidden="false" style="display: block;" ng-show="showModal">  
+     <div class="modal-dialog">    
+         <div class="modal-content">
+         <button type="button" class="close" ng-click="closeCatAddModel()">&times;</button>
+         	<div class="modal-header" style="background-color: #337ab7;color: #fff;">   
+             Add Category
+            </div>
+            <div class="modal-body">
+            	<form>
+				  <div class="form-group">
+				    <label for="category">Category Name:</label>
+				    <input type="text" class="form-control" ng-model="categoryname" id="category" placeholder="Enter Category Name">
+				  </div>
+				  
+				  <div class="form-group row">
+				 	 <label>Image:</label>
+				  		<button type="button" class="btn btn-primary" ng-click="showBrowseModal = !showBrowseModal"  style="padding-bottom: 4 px;">Browse</button>
+				  		 <img ng-src="{{catSelectedImage}}" onerror="this.src='bower_components/img/no_image.png'" name="img" style="height:50px"/>
+					</div>
+				  
+				  <div class="radio">
+					  <label><input type="radio" name="optradio" ng-model="activeCat" ng-value="'enable'">Enable</label>
+					</div>
+					<div class="radio">
+					  <label><input type="radio" name="optradio" ng-model="activeCat" ng-value="'disable'">Disable</label>
+					</div>
+					
+					<div class="form-group">
+						<div class="btn-group">
+				  			<button type="button" class="btn btn-primary" ng-click="addUser(categoryname,activeCat); showModal=false">Submit</button>
+				  			<button type="button" class="btn btn-danger" ng-click="closeCatAddModel()">Cancel</button>
+				  		</div>
+				  	</div>
+				</form>
+            </div>
+         </div>  
+     </div>
+ </div>
+ 
+ <!-- Show Edit Category Popup box  -->
+ <div class="modal fade in" id="CatEditModal" aria-hidden="false" style="display: block;" ng-show="showCatEditModal">  
+     <div class="modal-dialog">    
+         <div class="modal-content">
+         <button type="button" class="close" ng-click="closeCatEditModel()">&times;</button>
+         	<div class="modal-header" style="background-color: #337ab7;color: #fff;">   
+             Edit Category
+            </div>
+            <div class="modal-body" style="max-height: calc(100vh - 210px);overflow-y: auto;">
+            <form ng-submit="editSave()" id="editdish" class="form-horizontal">
+					<div class="form-group row">
+						<label for=dish class="col-sm-3 col-form-label">Category</label>
+						<div class="col-sm-6">
+							<input type="text" name="cat" id="cat" placeholder="Enter Category Name" ng-model="editCat"/>
+							<input type="text" name="catid" id="catid" ng-model="editcatid" style="display:none"/>
+						</div>
+					</div>
+					
+					<div class="form-group row">
+				 	 <label>Image:</label>
+				  		<button type="button" class="btn btn-primary" ng-click="showBrowseModal = !showBrowseModal"  style="padding-bottom: 4 px;">Browse</button>
+				  		 <img ng-src="{{catSelectedImage || editImg}}" onerror="this.src='bower_components/img/no_image.png'" name="img" style="height:50px" ng-model="editImg"/>
+					</div>
+					
+					<div class="form-group row">
+						<label for="optradio1" class="col-sm-3 col-form-label">Status*:</label>
+						<div class="col-sm-6" class="btn-group">
+							<label><input type="radio" name="optradio1" ng-model="editstatus" ng-value="'true'">Active</label>
+						    <label><input type="radio" name="optradio1" ng-model="editstatus" ng-value="'false'">Inactive</label>
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<div class="btn-group">
+							<button type="submit" class="btn btn-info spacing"  >Save</button>
+							<button type="button" class="btn btn-primary" ng-click="closeCatEditModel()">Cancel</button>  
+						</div>
+					</div>
+				</form>
+            </div>
+         </div>  
+     </div>
+ </div>
+ 
+   <div class="modal fade in" aria-hidden="false" style="display: block" ng-show="showBrowseModal">  
+     <div class="modal-dialog modal-lg">    
+         <div class="modal-content">
+         	<button type="button" class="close" ng-click="showBrowseModal=false">&times;</button>
+         	<div class="modal-header" style="background-color: #337ab7;color: #fff;">   
+             Select Image
+            </div>
+           <!--  <div class="modal-body" style="height: 500px; overflow-y: scroll"> -->
+            	<!-- <div   ng-repeat="catItemImages in catImagesArray">
+            		<img ng-src="{{ catItemImages }}" style="height:50px" ng-click="functionToBeExecuted(catItemImages)" />
+        		</div> -->
+        		  <div class="modal-body" style="height: 500px; overflow-y: scroll">
+        		<table id="barcategory" class="table table-bordered table-hover table-condensed">
+				  <tr ng-repeat="catItemImages in catImagesArray">
+				    <td class="zoom">
+				        <img ng-src="{{ catItemImages.img1 }}" style="height:80px" ng-click="functionToBeExecuted(catItemImages.img1)" />
+				    </td>
+				    <td class="zoom">
+						<img ng-src="{{ catItemImages.img2 }}" style="height:80px" ng-click="functionToBeExecuted(catItemImages.img2)" />
+					</td>
+				    <td class="zoom">
+				       <img ng-src="{{ catItemImages.img3 }}" style="height:80px" ng-click="functionToBeExecuted(catItemImages.img3)" />
+				    </td>
+				    <td class="zoom">
+				        <img ng-src="{{ catItemImages.img4 }}" style="height:80px" ng-click="functionToBeExecuted(catItemImages.img4)" />
+				    </td>
+				  </tr>
+				</table>
+            </div>
+           <!--  </div> -->
+         </div>  
+     </div>
+ </div>

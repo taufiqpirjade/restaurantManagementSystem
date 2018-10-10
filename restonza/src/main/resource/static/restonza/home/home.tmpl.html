@@ -1,0 +1,31 @@
+<div id="homepage" ng-controller="HomeController">
+	<h3 class="invalid">{{message}}</h3>
+	<h1>Welcome to Billy App</h1>
+	<div ng-if="loginCheck()">
+		<a href="#/login" class="badge1">Login</a>
+	</div>
+	<div ng-if="getRoleCheck()">
+		<div class="col-lg-3 col-md-6">
+			<div class="panel panel-yellow">
+				<div class="panel-heading">
+					<div class="row">
+						<div class="col-xs-3">
+							<i class="fa fa-cutlery fa-3x"></i>
+						</div>
+						<div class="col-xs-9 text-right">
+							<div class="huge">{{ordercounter}}</div>
+							<div>Orders!</div>
+						</div>
+					</div>
+				</div>
+                <div class="panel-footer" style="padding-bottom: 30px">
+                    <span class="pull-right">
+                    	<button type="button" class="btn btn-default btn-sm" ng-click="getUpdateOrderCount()">
+                    		<span class="fa fa-refresh"></span>
+                    	</button>
+                    </span>
+                </div>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,279 @@
+<div class="add-row-editable-table">
+  <button class="btn btn-primary" ng-click="addModal = !addModal">Add Drinks Item</button>
+   <button class="btn btn-primary" ng-click="downloadMenu();" style="padding-bottom: 4 px;">Download Menu</button>
+  <button class="btn btn-primary" ng-click="updateBarItemSequence()">Update Sequence</button>
+</div>
+<div>
+	<table id="baritem" class="table table-bordered table-hover table-condensed" fixed-header>
+	  <tr>
+	    <th>#</th>
+	     <th style="display:none">Id</th>
+	    <th>Name*</th>
+	    <th>Category*</th>
+	    <th>Qty</th>
+	    <th>Price*</th>
+	    <th>Image</th>
+	    <th>Status*</th>
+	    <th>Action</th>
+	  </tr>
+	  <tr>
+				<td></td>
+				<td><input type="text" ng-model="filteritemname" class="filterclass"/></td> <!-- Need to add filtration logic for name -->
+				<td><input type="text" ng-model="filtercategory" class="filterclass"/></td> <!-- Need to add filtration logic for name -->
+				<!-- <td><input type="text" ng-model="filtersubcategory" class="filterclass"/></td> -->
+				<td></td>
+				<td></td>
+				<td></td>
+				<td><select ng-options="s.value as s.text for s in filteredStatus" ng-init=" filterstatus = filteredStatus[0].value" ng-model="filterstatus" class="filterclass"></select></td> <!-- Need to add filtration logic for status -->
+				<td></td>
+ 		</tr>
+ 	<tbody ui:sortable ng:model="baritems">
+	  <tr ng-repeat="dish in (filterItems = (baritems| filter:{
+		  bar_item_name:filteritemname,
+		  bar_category_name:filtercategory,
+		  status:filterstatus}))" class="editable-row" style="cursor: move;">
+	    <td class="table-id">
+	        {{dish.sequence}}
+	    </td>
+	    <td style="display:none">{{ dish.id}}</td>
+	    <td>
+	          {{ dish.bar_item_name || 'empty' }}
+	    </td>
+	    
+	    <td>
+	          {{ dish.bar_category_name || 'empty' }}
+	    </td>
+	    <td>
+	          {{ dish.qty || 'N/A' }}
+	    </td>
+	    
+	    <td>
+	          {{ dish.price || 'empty' }}
+	    </td>
+	    
+	    <td>
+	         <img ng-src="{{ dish.barimg || 'empty' }}" onerror="this.src='bower_components/img/no_image.png'"  style="height:50px"/>
+	    </td>
+	    
+	    <td class="select-td">
+	          {{ showStatus(dish) }}
+	    </td>
+	    
+	    <td>
+	      <div class="buttons" ng-show="!rowform.$visible">
+	        <button class="btn btn-primary editable-table-button btn-xs" ng-click="editBarItem(dish)">Edit</button>
+	        <button class="btn btn-danger editable-table-button btn-xs" ng-click="removeBarItem(dish)">Delete</button>
+	      </div>
+	    </td>
+	  </tr>
+	  </tbody>
+	</table>
+</div>
+
+<!-- Edit bar item popup -->
+<div class="modal fade in" id="barItemEditModal" aria-hidden="false" style="display: block;" ng-show="showbarItemEditModal">  
+     <div class="modal-dialog">    
+         <div class="modal-content">
+         <button type="button" class="close" ng-click="showbarItemEditModal=false">&times;</button>
+         	<div class="modal-header" style="background-color: #337ab7;color: #fff;">   
+             Edit Drinks Item
+            </div>
+            <div class="modal-body" style="max-height: calc(100vh - 210px);overflow-y: auto;">
+            <form ng-submit="editBarItemSave()" id="editdish" class="form-horizontal">
+					<div class="form-group row">
+						<label for=dish class="col-sm-3 col-form-label">Name:</label>
+						<div class="col-sm-6">
+							<input type="text" name="dish" id="dish" placeholder="Enter Dish Name" ng-model="editbarItemName"/>
+						</div>
+					</div>
+					<div class="form-group row">
+					    <label for="calories" class="col-sm-3 col-form-label">Quantity:</label>
+					    <div class="col-sm-6">
+					    	<!-- <input type="text" class="form-control" name="qty" id="qty" placeholder="Quantity" ng-model="editcalories" format="number"/> -->
+					    	<span>{{editqty}}</span>
+					    </div>
+					 </div>
+					
+					<div class="form-group row">
+						<label for="price" class="col-sm-3 col-form-label">Price*:</label>
+						<div class="col-sm-6">
+							<input type="text" class="form-control" name="price" id="price" placeholder="Price" ng-model="editprice" format="number"/>
+						</div>
+					</div>
+					
+					<div class="form-group row">
+				 	 <label>Image:</label>
+				  		<button type="button" class="btn btn-primary" ng-click="showBrowseModal = !showBrowseModal"  style="padding-bottom: 4 px;">Browse</button>
+				  		 <img ng-src="{{selectedImage || editImg}}" onerror="this.src='bower_components/img/no_image.png'" name="img" style="height:50px" ng-model="editImg"/>
+					</div>
+					
+					<div class="form-group row">
+						<label for="optradio1" class="col-sm-3 col-form-label">Status*:</label>
+						<div class="col-sm-6" class="btn-group">
+							<label><input type="radio" name="optradio1" ng-model="edititemstatus" ng-value="'true'">Active</label>
+						    <label><input type="radio" name="optradio1" ng-model="edititemstatus" ng-value="'false'">Inactive</label>
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<div class="btn-group">
+							<button type="submit" class="btn btn-info spacing">Save</button>
+							<button type="button" class="btn btn-primary" ng-click="showbarItemEditModal=!showbarItemEditModal">Cancel</button>  
+						</div>
+					</div>
+				</form>
+            </div>
+         </div>  
+     </div>
+ </div>
+
+<!--  Add Bar item popup -->
+<div class="modal fade in" id="dishModal" aria-hidden="false"
+	style="display: block;" ng-show="addModal">
+	<div class="modal-dialog modal-xl">
+		<div class="modal-content">
+			<button type="button" class="close" ng-click="closeBarItemAddModel()">&times;</button>
+			<div class="modal-header"
+				style="background-color: #337ab7; color: #fff;">
+				<p class="heading lead">Add Drinks Item</p>
+			</div>
+			<div class="modal-body" style="max-height: calc(100vh - 210px);overflow-y: auto;">
+				<form name="addbaritem" class="form-horizontal" ng-submit="addBarMenuItem()">
+					<div class="row" style="padding: 10px;">
+						<div class="col-sm-6">
+							<div class="form-group">
+								<div>
+									<label for="barcategoryname">Category Name*</label>
+								</div>
+								<div>
+									<select id="barcategoryname" class="form-control" name="barcategoryname"  ng-model = "barcategorynameval" required></select> <!--  ng-change="displaySubCategories()" -->
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="dish">Item Name*</label>
+								<input type="text" id="dish" class="form-control" name="itemname"
+									ng-model="addbaritem.bar_item_name" required>
+							</div>
+							<div class="form-group row">
+						 	 <label>Image:</label>
+						  		<button type="button" class="btn btn-primary" ng-click="showBrowseModal = !showBrowseModal"  style="padding-bottom: 4 px;">Browse</button>
+						  		 <img ng-src="{{selectedImage}}" onerror="this.src='bower_components/img/no_image.png'" style="height:50px"/>
+							</div>
+						</div>
+						<div class="col-sm-6">
+							<div class="row">
+								<div class="col-sm-4">
+									<label>Served as independently</label>
+								</div>
+								<div class="col-sm-4">
+								      <i class="fa fa-toggle-on activeclass"
+								         ng-if="servedas == true" 
+								         ng-click="changeServedAsStatus();">
+								      </i>
+								      <i class="fa fa-toggle-on fa-rotate-180 inactiveclass"
+								         ng-if="servedas == false"
+								         ng-click="changeServedAsStatus();">
+								      </i>
+							      </div>
+							  </div>
+						    
+						    <div class="form-group" ng-show="!servedas">
+						    	<div class="row">
+						    		<div class="col-sm-4">
+								    	<label for=qtyservered class="form-label">Serving quantity Description:</label>
+								    </div>
+								    <div>
+								    	<input type="text" ng-model="qtyvalue" id="qtyvalue" placeholder="Enter Quantity">
+								    	<input type="button" class="btn btn-primary addnew" value="Add New" ng-click="addNew(qtyvalue)">
+								    </div>
+								 </div>
+								 <div class="row">
+								 	<div class="col-sm-4"></div>
+							    	<div class="col-sm-4">
+								    	<table>
+								    		<thead>
+								    			<tr>
+									    			<th>Qty</th>
+									    			<th>Price</th>
+									    			<th></th>
+								    			</tr>
+								    		</thead>
+								    		<tbody>
+								    			<tr ng-repeat="qty in qtyDetails" id="{{qty.qty}}tr">
+								    				<td>{{qty.qty}}</td>
+								    				<td><input type="text" name="price" id="qtyprice" ng-model="qty.price" format="number" /></td>
+								    				<td><button class="btn btn-danger editable-table-button btn-xs" ng-click="removeQty($index)"><i class="fa fa-trash" aria-hidden="true"></i></button></td>
+								    			</tr>
+								    		</tbody>
+								    	</table>
+								    	
+								    	<div>
+									  		<p id="errormsg"></p>
+									  	</div>
+							    	</div>
+							    </div>
+							</div>
+							
+							<div class="form-group" ng-show="servedas">
+								<div class="col-sm-4">
+									<label for="price">Price*:</label>
+								</div>
+							<div class="col-sm-4">
+								<input type="text" name="price" id="addprice"
+									ng-model="addbaritem.price" format="number"/> 
+							</div>
+							</div>
+							
+							<div class="form-group">
+							<div class="col-sm-4">
+								<label  for="status">Status*</label>
+								</div>
+							<div class="col-sm-4">
+									<input type="radio" name="optradio1" ng-model="addbaritem.status" ng-value="'true'" required>Active <input type="radio"
+										name="optradio1" ng-model="addbaritem.status" ng-value="'false'" required>Inactive
+										</div>
+								</div>
+						</div>
+					</div>
+					<div class="row hl">
+						<div class="form-group">
+							<div class="btn-group" style="margin-left: 40%;">
+								<button type="submit" class="btn btn-info spacing">Add Drinks Item</button>
+								<button type="button" class="btn btn-primary" ng-click="closeBarItemAddModel()">Cancel</button>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+ <div class="modal fade in" aria-hidden="false" style="display: block" ng-show="showBrowseModal">  
+     <div class="modal-dialog modal-lg">    
+         <div class="modal-content">
+         	<button type="button" class="close" ng-click="showBrowseModal=false">&times;</button>
+         	<div class="modal-header" style="background-color: #337ab7;color: #fff;">   
+             Select Image
+            </div>
+            <div class="modal-body" style="height: 500px; overflow-y: scroll">
+        		<table id="barcategory" class="table table-bordered table-hover table-condensed">
+				  <tr ng-repeat="barItemImages in barItemImagesArray">
+				    <td class="zoom">
+				        <img ng-src="{{ barItemImages.img1 }}" style="height:80px" ng-click="functionToBeExecuted(barItemImages.img1)" />
+				    </td>
+				    <td class="zoom">
+						<img ng-src="{{ barItemImages.img2 }}" style="height:80px" ng-click="functionToBeExecuted(barItemImages.img2)" />
+					</td>
+				    <td class="zoom">
+				       <img ng-src="{{ barItemImages.img3 }}" style="height:80px" ng-click="functionToBeExecuted(barItemImages.img3)" />
+				    </td>
+				    <td class="zoom">
+				        <img ng-src="{{ barItemImages.img4 }}" style="height:80px" ng-click="functionToBeExecuted(barItemImages.img4)" />
+				    </td>
+				  </tr>
+				</table>
+            </div>
+         </div>  
+     </div>
+ </div>

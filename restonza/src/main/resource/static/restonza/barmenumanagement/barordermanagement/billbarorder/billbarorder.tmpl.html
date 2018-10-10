@@ -1,0 +1,41 @@
+<div id="billmanagement">
+<table class="table table-bordered table-hover table-condensed">
+  <tr>
+    <th>Customer ID</th>
+    <th>Table No</th>
+    <th>Order ID</th>
+    <th>Order Summary</th>
+    <th>Amount</th>
+    <th>Action</th>
+  </tr>
+  <tr ng-repeat="order in orders">
+    <td class="table-id" ng-model="order.customer_id">
+        {{order.customer_id}}
+    </td>
+     <td class="table-id" ng-model="order.tableid">
+        {{order.table_id}}
+    </td>
+    <td>
+        <span e-name="table_id" ng-model="order.orderids">
+          {{ order.id || 'empty' }}
+        </span>
+    </td>
+    <td>
+        <span e-name="table_id" ng-model="order.formatOrderSummary">
+          {{ order.formatOrderSummary || 'empty' }}
+        </span>
+    </td>
+    <td>
+        <span e-name="table_id" ng-model="order.sum">
+          {{ order.sum || '0' }}
+        </span>
+    </td>
+    <td>
+      <div class="buttons" ng-show="!rowform.$visible">
+        <!-- <button class="btn btn-primary editable-table-button btn-xs" ng-click="billorder($index)">Bill order</button>
+        <button class="btn btn-default editable-table-button btn-xs" ng-click="printBill($index)">Print KOT</button> -->
+      </div>
+    </td>
+  </tr>
+</table>
+</div>

@@ -1,0 +1,39 @@
+<div id="callmanagement">
+<table class="table table-bordered table-hover table-condensed">
+  <tr>
+  <th>ID</th>
+    <th>Customer ID</th>
+    <th>Type</th>
+    <th>Table No.</th>
+    <th>Action</th>
+  </tr>
+  <tr ng-repeat="call in calls">
+    <td class="table-id">
+        {{call.call_id}}
+    </td>
+    <td>
+        <span e-name="table_id" e-form="rowform">
+          {{ call.called_customer_id || 'empty' }}
+        </span>
+    </td>
+    
+    <td>
+        <span e-name="table_id" e-form="rowform">
+          {{ call.call_type || 'empty' }}
+        </span>
+    </td>
+    
+    <td>
+        <span e-name="table_id" e-form="rowform">
+          {{ call.table_no || 'empty' }}
+        </span>
+    </td>
+    
+    <td>
+      <div class="buttons" ng-show="!rowform.$visible">
+       <button class="btn btn-danger editable-table-button btn-xs" ng-click="approve($index, call.call_id)">Approve Call</button>
+      </div>
+    </td>
+  </tr>
+</table>
+</div>

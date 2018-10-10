@@ -1,0 +1,30 @@
+<div id="hotelMenuBulkUploadFormdiv">
+	<form action="/restonza/downloadTemplate" id="downloadtemplateform" class="form-horizontal" method="post">
+		<div class="form-group row">
+			<label for="downloadlabel" class="col-sm-4 col-form-label">Download Template(Bulk Upload):</label>
+			<div class="col-sm-6">
+				<button type="submit" class="btn btn-info spacing" id="templatedownload">Download Template</button>
+			</div>
+		</div>
+	</form>
+	<form action="#" id="hotelMenuBulkUploadForm" class="form-horizontal">
+		<div class="form-group row">
+			<label for="fileUpload" class="col-sm-4 col-form-label">File Upload</label>
+			<div class="col-sm-6">
+				<input type="file" id="fileUpload" name="fileUpload"/> 
+			</div>
+		</div>
+		
+		<div class="form-group row">
+			<div class="btn-group">
+				<button type="button" class="btn btn-default spacing" id="upload" ng-click="bulkDatafileupload()">Verify Uploaded Data</button>
+				<button type="submit" class="btn btn-info" ng-show="showModal">Upload Dishes</button>  
+			</div>
+		</div>
+		
+		
+		<div class="form-group row">
+			<div id="dvCSV"></div>
+		</div>
+	</form>
+</div>

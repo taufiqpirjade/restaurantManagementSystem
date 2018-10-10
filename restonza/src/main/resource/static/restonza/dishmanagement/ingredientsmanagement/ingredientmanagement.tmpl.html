@@ -1,0 +1,119 @@
+<div class="row" style="padding: 5px;">
+		<div style="float: left;">
+		  <button class="btn btn-primary" ng-click="showModal = !showModal"  style="padding-bottom: 4 px;">Add Ingredient</button>
+		</div>
+		<div style="width: 100px; float: right;">
+			<select id="ddlPageSize" class="form-control control-color"
+				ng-model="pageSizeSelected" ng-change="changePageSize()"  ng-init=" pageSizeSelected = prop.value"  ng-options="v for v in prop.values" >
+			</select>
+		</div>
+		<div style="float: right;">
+			<a class="btn btn-primary">Page: {{pageIndex}} / {{numPages}}</a>
+		</div>
+	</div>
+<div>
+		<table class="table table-bordered table-hover table-condensed">
+		 <thead>
+			<tr class="tableheadercolor">
+				<th>#</th>
+				<th><a class="normallink" ng-click="sort('ingredients_name',$event)"> Name <span ng-show="sortType == 'ingredients_name' && !sortReverse"
+						class="fa fa-caret-up"></span> <span
+						ng-show="sortType == 'ingredients_name' && sortReverse" class="fa fa-caret-down"></span>
+				</a></th>
+				<th>Status</th>
+				<th>Action</th>
+			</tr>
+			 </thead>
+			<tr>
+				<td></td>
+				<td><input type="text" ng-model="filterIngredient" class="filterclass"/></td> <!-- Need to add filtration logic for name -->
+				<td><select ng-options="s.value as s.text for s in filteredStatus" ng-init=" filterstatus = filteredStatus[0].value" ng-model="filterstatus" class="filterclass"></select></td> <!-- Need to add filtration logic for status -->
+				<td></td>
+			</tr>
+		  <tr ng-repeat="ingredient in (filterItems = (ingredients| filter:{
+		  ingredients_name:filterIngredient,
+		  status:filterstatus}))| startFrom:(pageIndex-1)*pageSizeSelected | limitTo:pageSizeSelected| orderBy:columnToOrder:sortReverse" class="editable-row">
+		    <td class="table-id">
+		        {{$index+1}}
+		    </td>
+		    <td>
+		        <span editable-text="ingredient.ingredients_name" e-name="ingredients_name" e-form="rowform" e-required>
+		          {{ ingredient.ingredients_name || 'empty' }}
+		        </span>
+		    </td>
+		    <td class="select-td">
+		        <span editable-select="ingredient.status" e-name="status" e-form="rowform" e-selectpicker
+		              e-ng-options="s.value as s.text for s in statuses">
+		          {{ showStatus(ingredient) }}
+		        </span>
+		    </td>
+		    <td>
+		      <form editable-form name="rowform" ng-show="rowform.$visible" class="form-buttons form-inline"
+		            shown="inserted == ingredient"  onbeforesave="validateField(rowform.$data, 'Ingredient')" onaftersave="changeIngredient(rowform.$data, ingredient)">
+		        <button type="submit" ng-disabled="rowform.$waiting" class="btn btn-primary editable-table-button btn-xs">
+		          Save
+		        </button>
+		        <button type="button" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()" class="btn btn-default editable-table-button btn-xs">
+		          Cancel
+		        </button>
+		      </form>
+		      <div class="buttons" ng-show="!rowform.$visible">
+		        <button class="btn btn-primary editable-table-button btn-xs" ng-click="rowform.$show()"><i class="fa fa-pencil" aria-hidden="true"></i><span>Edit</span></button>
+		        <button class="btn btn-danger editable-table-button btn-xs" ng-click="removeIngredient($index)"><i class="fa fa-trash" aria-hidden="true"></i>Delete</button>
+		      </div>
+		    </td>
+		  </tr>
+		</table>
+</div>
+<div class="pull-right">
+		<ul uib-pagination total-items="totalCount" ng-change="pageChanged()"
+					items-per-page="pageSizeSelected" direction-links="true"
+					ng-model="pageIndex" max-size="maxSize" class="pagination"
+					boundary-links="true" rotate="false" num-pages="numPages"></ul>
+	</div>
+
+<!-- Modal window popup -->
+
+ <div class="modal fade in" aria-hidden="false" style="display: block;" ng-show="showModal">  
+     <div class="modal-dialog">    
+         <div class="modal-content">
+         <button type="button" class="close" ng-click="showModal=false">&times;</button>
+         	<div class="modal-header" style="background-color: #337ab7;color: #fff;">   
+             Add Ingredient
+            </div>
+            <div class="modal-body">
+            	<form class="form-group form-inline well">
+            		<table class="table">
+					  <tbody>
+					    <tr>
+					      <td><label for="ingredient">Ingedient Name:</label></td>
+					      <td><input type="text" class="form-control" id="ingredient" ng-model="ingredientname" placeholder="Ingredeint Name "></td>
+					    </tr>
+					    
+					     <tr>
+					      <td><label>Status:</label></td>
+					      <td>
+					     	<label><input type="radio" name="optradio" ng-value="'enable'" ng-model="status">Active</label>
+			  				<label><input type="radio" name="optradio" ng-value="'disable'" ng-model="status">Inactive</label>
+			  				</td>
+					    </tr>
+					  </tbody>
+					</table>
+				  <div >
+				  </div>
+				  <div>
+				  </div>
+				  <div class="form-group">
+						<div class="btn-group">
+						  <button type="submit" class="btn btn-primary" ng-click="addIngredient(ingredientname,status)">Submit</button>
+						  <button type="button" class="btn btn-danger" ng-click="showModal=false">Cancel</button>
+						</div>
+				</div>
+				</form>
+            </div>
+             <div class="modal-footer">        
+                      
+             </div>    
+         </div>  
+     </div>
+ </div>

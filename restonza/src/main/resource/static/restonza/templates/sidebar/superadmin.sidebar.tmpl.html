@@ -1,0 +1,38 @@
+<span style="font-size: 30px; cursor: pointer; left: 0; position: fixed;" ng-click="openNav()">&#9776;</span>
+<div id="mySidenav" class="sidenav scrollbar">
+ 	<a href="javascript:void(0)" class="closebtn" ng-click="closeNav()">&#9776; Billy</a>
+     <ul id="accordian">
+     	<li><a href="#/home"><img src="/bower_components/img/icons/Dashboard-1.png" class="sidebarimgico"><span class="sidebarlispan">Dashboard</span></a></li>
+     	<li class="panel">
+              		<a href="" data-toggle="collapse" data-parent="#accordian" data-target="#hotelmanagement" ><img src="/bower_components/img/icons/place-order.png" class="sidebarimgico"><span class="sidebarlispan">Hotel Management</span></a>
+             		<ul class="collapse" id="hotelmanagement">
+                		<li><a href="#/addhotel"><span class="sidebarsublispan"> - Add Hotel</span></a></li>
+                		<li><a href="#/updatehotel"><span class="sidebarsublispan"> - Update Hotel</span></a></li>
+              		</ul>
+            	</li>
+        <li class="panel"><a href="#/greetingmanagement"><img src="/bower_components/img/icons/customer-feedback.png" class="sidebarimgico"><span class="sidebarlispan">Greeting Management</span></a></li>
+        
+		<li class="panel">
+			<a href="" data-toggle="collapse" data-parent="#accordian" data-target="#approvalmanageemnt"><img src="/bower_components/img/icons/customer-feedback.png" class="sidebarimgico"><span class="sidebarlispan">Approval Management</span></a>
+			<ul class="collapse" id="approvalmanageemnt">
+				<li><a href="#/campaignsApproval"><span class="sidebarsublispan"> - Campaign Approval</span></a></li>
+				<li><a href="#/greetingsApproval"><span class="sidebarsublispan"> - Greetings Approvals</span></a></li>
+			</ul>
+		</li>
+		
+		<li class="panel"><a href="#/campaignmanagement"><img src="/bower_components/img/icons/configuration.png" class="sidebarimgico"><span class="sidebarlispan">Campaign Management</span></a></li>
+		
+		<li class="panel">
+              		<a href="" data-toggle="collapse" data-parent="#accordian" data-target="#hotelanalysis"><img src="/bower_components/img/icons/Report-Analysis-Dashboard.png" class="sidebarimgico"><span class="sidebarlispan">Hotel Analysis</span></a>
+             		<ul class="collapse" id="hotelanalysis">
+                		<li><a href="#/generateReport"><span class="sidebarsublispan"> - Report Analysis</span></a></li>
+                		<li><a href="#/hotelCustomAnalysis"><span class="sidebarsublispan"> - Custom Analysis</span></a></li>
+                		<li><a href="#/hotelSalesReport"><span class="sidebarsublispan"> - Sales Analysis</span></a></li>
+                		<li><a href="#/paymentReport"><span class="sidebarsublispan"> - Payment Report</span></a></li>
+              		</ul>
+            	</li>
+            	
+         <li><a href="#/hotelMenuBulkUpload">Bulk CSV upload</a></li>
+         <li><a href="#/allCustomerData"><img src="/bower_components/img/icons/User-managment.png" class="sidebarimgico"><span class="sidebarlispan">All Registered Customer</span></a></li>
+     </ul>
+</div>

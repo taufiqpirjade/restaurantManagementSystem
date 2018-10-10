@@ -1,0 +1,31 @@
+<div id="qrcodes">
+<button class="btn btn-info" ng-click= "printAll()">Print All</button>
+	<table class="table table-bordered table-hover table-condensed">
+	  <tr>
+	    <th>Hotel Reg. No</th>
+	    <th>Table No.</th>
+	    <th>QR Code</th>
+	    <th>Print QR Code</th>
+	  </tr>
+	  <tr ng-repeat="qrcode in qrcodes" class="editable-row">
+	    <td class="table-id" ng-model="qrcode.hotel_id">
+	        {{qrcode.hotel_id}}
+	    </td>
+	    <td class="table-id" ng-model="qrcode.table_id">
+	    <div>
+	        {{qrcode.table_id}}
+	        </div>
+	    </td>
+	    <td class="table-id">
+	    	<div class="PrintArea" id="{{$index}}">
+	        	<img src="data:image/jpeg;base64,{{ qrcode.qrcodeimg || 'empty' }}" style="height:192px"/>
+	        	<br/>
+	        	{{qrcode.table_id}}
+	        </div>
+	    </td>
+	    <td class="table-id">
+	        <button class="btn btn-default" ng-click="printQRCode($index)">Print</button>
+	    </td>
+	  </tr>
+	</table>
+</div>

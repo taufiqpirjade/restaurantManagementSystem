@@ -1,0 +1,110 @@
+<div id="ordermanagement">
+<table class="table table-bordered table-hover table-condensed">
+  <tr>
+    <th>Order ID</th>
+    <th>Table No.</th>
+    <th>Customer ID</th>
+    <th>Order Details</th>
+    <th>Updated On</th>
+    <th>Action</th>
+  </tr>
+  <tr ng-repeat="order in orders" ng-class="{readyorder: order.status=='ready_order'}">
+    <td class="table-id">
+        {{order.id}}
+    </td>
+    <td>
+        <span e-name="table_id" e-form="rowform">
+          {{ order.table_id || 'empty' }}
+        </span>
+    </td>
+    
+    <td>
+        <span e-name="table_id" e-form="rowform">
+          {{ order.customer_id || 'empty' }}
+        </span>
+    </td>
+    <td>
+        <span e-name="ordered_on" e-form="rowform">
+			{{ order.orderdetails || 'empty' }} 
+        </span>
+    </td>
+    <td>
+        <span e-name="updated_on" e-form="rowform">
+          {{ order.updated_time | date:'medium' }}
+        </span>
+    </td>
+    
+    <td>
+      <div class="buttons" ng-show="!rowform.$visible">
+        <button class="btn btn-primary editable-table-button btn-xs" ng-click="viewOrder($index)">View Order</button>
+        <button class="btn btn-success editable-table-button btn-xs" ng-click="deliverOrder($index)">Deliver Order</button>
+      </div>
+    </td>
+  </tr>
+</table>
+
+<div>
+	<div class="readyorder sample"></div><span>Ready Order</span>
+</div>
+</div>
+
+<div id="editOrder" class="modal fade in" aria-hidden="false" style="display: block;" ng-show="showModal">  
+     <div class="modal-dialog">    
+         <div class="modal-content">
+         <button type="button" class="close" ng-click="showModal=false">&times;</button>
+         	<div class="modal-header" style="background-color: #337ab7;color: #fff;">   
+             	View Order
+            </div>
+            <div class="modal-body">
+           		<form action="#" id="ordermodelform" class="form-horizontal">
+           			<div class="PrintArea" id="billorderkot" style="margin-left: 5px;">
+           				<div class="row">
+           					<div class="col-sm-4">
+           						<div class="row">
+           							<div>
+	           							<label>Order ID: </label>
+	           							<span class="wordwrap">{{editdata.orderid}}</span>
+           							</div>
+           						</div>
+           						<div class="row">
+           							<div>
+	           							<label>Table No: </label>
+	           							<span>{{editdata.tableno}}</span>
+           							</div>
+           						</div>
+           					</div>
+           					<div class="col-sm-6 vl">
+           						<div id="ordertablediv" >
+									<table id="ordertable"class="table table-striped table-bordered" style="margin-top: 10px;">
+										<thead>
+											<tr>
+												<th>Dish Name</th>
+												<th>Quantity</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr ng-repeat="dishDetail in editdata.dishDetails" id="{{dishDetail.name}}tr">
+												<td><label>{{dishDetail.name}}</label></td>
+												<td><label>{{dishDetail.qty}}</label></td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+								<div>
+           						<label>Instruction: </label>
+           						<span>{{instruction}}</span>
+           						</div>
+           					</div>
+           				</div>
+           				<div class="row hl" >
+           					<div class="btn-group">
+										<button type="button" class="btn btn-default spacing" ng-click="printBill(editdata.index)">Print KOT</button>
+										<button type="button" class="btn btn-primary" ng-click="showModal=false">Close</button>  
+									</div>
+           				</div>
+					</div>
+				</form>
+			</div>
+   		</div>  
+ 	</div>
+ </div>

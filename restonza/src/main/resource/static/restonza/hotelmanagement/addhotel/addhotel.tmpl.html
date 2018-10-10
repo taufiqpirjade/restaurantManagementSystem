@@ -1,0 +1,116 @@
+<div id="addhotel">
+	<form action="#/home" id="addhotelform" class="form-horizontal">
+		<div class="form-group row">
+			<label for="hotelname" class="col-sm-2 col-form-label">Hotel Name:</label>
+			<div class="col-sm-6">
+				<input type="text" name="hotelname" id="hotelname" placeholder="Hotel Name"/>
+			</div>
+		</div>
+		
+		<div class="form-group row">
+			<label for="hoteltype" class="col-sm-2 col-form-label">Hotel Type:</label>
+			<div class="col-sm-6">
+				<select name="hoteltype" id="hoteltype"></select>
+			</div>
+		</div>
+		
+		<div class="form-group row">
+			<label for="currencyTypes" class="col-sm-2 col-form-label">Hotel Currency:</label>
+			<div class="col-sm-6">
+				<select name="currencyTypes" id="currencyTypes"></select>
+			</div>
+		</div>
+		
+		<div class="form-group row">
+			<label for="address" class="col-sm-2 col-form-label">Hotel Address:</label>
+			<div class="col-sm-6">
+				<textarea name="address" id="address"></textarea>
+			</div>
+		</div>
+		
+		<div class="form-group row">
+			<label for="hoteladminname" class="col-sm-2 col-form-label">Hotel Admin name:</label>
+			<div class="col-sm-6">
+				<input type="text" name="hoteladminname" id="hoteladminname" placeholder="Firstname Lastname"/>
+			</div>
+		</div>
+		
+		<div class="form-group row">
+		    <label for="username" class="col-sm-2 col-form-label">User name:</label>
+		    <div class="col-sm-6">
+		    	<input type="text" name="username" id="username"/>
+		    </div>
+		  </div>
+		  
+		  <div class="form-group row">
+		    <label for="password" class="col-sm-2 col-form-label">Password:</label>
+		    <div class="col-sm-6">
+		    	<input type="password" name="password" id="password"/>
+		    </div>
+		  </div>
+		  
+		  <div class="form-group row">
+		    <label for="email" class="col-sm-2 col-form-label">Email ID:</label>
+		    <div class="col-sm-6">
+		    	<input type="email" name="email" id="email"/>
+		    </div>
+		  </div>
+		
+		<div class="form-group row">
+			<label for="hoteladminphone" class="col-sm-2 col-form-label">Admin Mobile Number:</label>
+			<div class="col-sm-6">
+				<input type="text" name="hoteladminphone" id="hoteladminphone" placeholder="Mobile Number"/>
+			</div>
+		</div>
+		
+		<div class="form-group row">
+			<label for="hoteladminphoto" class="col-sm-2 col-form-label">Hotel Admin Photo:</label>
+			<div class="col-sm-6">
+				<input id="hoteladminphoto" name="hoteladminphoto" type="file" class="file-loading" />
+				<img id="myImg" src="#" alt="Hotel Admin Photo" width="200px" height="200px"/>
+			</div>
+		</div>
+		
+		<div class="form-group row">
+			<label for="hotelsubscription" class="col-sm-2 col-form-label">Hotel Subscription Plan:</label>
+			<div class="col-sm-6">
+				<select name="hotelsubscription" id="hotelsubscription"></select>
+			</div>
+		</div>
+		
+		<div class="form-group row">
+			<label for="startdate" class="col-sm-2 col-form-label">Plan start Date:</label>
+			<div class="col-sm-6">
+			<!-- Need to add datepicker -->
+				<input type="text" name="startdate" id="startdate" placeholder="Plan Start Date"/>
+			</div>
+		</div>
+		
+		<div class="form-group row">
+			<label for="hotelstatus" class="col-sm-2 col-form-label">Status:</label>
+			<div class="col-sm-6">
+				<div id="hotelstatus" class="btn-group">
+					<input name="hotelstatus" type="radio" value="active" checked="checked" /><label class="radiobtn">Active</label>
+					<input name="hotelstatus" type="radio" value="inactive" /><label class="radiobtn">Inactive</label>
+				</div>
+			</div>
+		</div>
+		
+		<!-- Added for Bar Privilage to user-->
+			<div class="form-group row">
+			<label for="hotelstatus" class="col-sm-2 col-form-label">Liquar Priviledges:</label>
+			<div class="col-sm-6">
+				<div id="hotelstatus" class="btn-group">
+					<input name="liquarPrivilege" type="radio" value="active" /><label class="radiobtn">Yes</label>
+					<input name="liquarPrivilege" type="radio" value="inactive" checked="checked" /><label class="radiobtn">No</label>
+				</div>
+			</div>
+		</div>
+		
+		<div class="form-group">
+			<div class="btn-group">
+				<button type="submit" class="btn btn-info spacing">Add Hotel</button>
+			</div>
+		</div>
+	</form>
+</div>
